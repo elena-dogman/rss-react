@@ -11,7 +11,7 @@ class App extends React.Component {
   render() {
     return (
       <div className={styles.app}>
-           <header className="header">
+           <header className={styles.header}>
           <SearchBar onSearch={this.handleSearch} />
           </header>
         <Results />
