@@ -13,19 +13,19 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
     super(props);
     this.state = {
-      searchTerm: localStorage.getItem('searchTerm') || ''
+      searchTerm: localStorage.getItem('searchTerm') || '',
     };
   }
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ searchTerm: event.target.value });
-  }
+  };
 
   handleSearch = () => {
     const trimmedTerm = this.state.searchTerm.trim();
     localStorage.setItem('searchTerm', trimmedTerm);
     this.props.onSearch(trimmedTerm);
-  }
+  };
 
   render() {
     return (
@@ -36,7 +36,9 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
           className={styles.search__input}
           onChange={this.handleChange}
         />
-        <button className={styles.search__button} onClick={this.handleSearch}>Search</button>
+        <button className={styles.search__button} onClick={this.handleSearch}>
+          Search
+        </button>
       </div>
     );
   }

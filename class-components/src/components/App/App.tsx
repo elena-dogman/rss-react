@@ -1,19 +1,19 @@
 import React from 'react';
-import styles from'./App.module.scss';
+import styles from './App.module.scss';
 import SearchBar from '../SearchBar/SearchBar';
 import Results from '../Results/Results';
 
 class App extends React.Component {
   handleSearch = (term: string) => {
     console.log('Perform search with term:', term);
-  }
+  };
 
   render() {
     return (
       <div className={styles.app}>
-           <header className={styles.header}>
+        <header className={styles.header}>
           <SearchBar onSearch={this.handleSearch} />
-          </header>
+        </header>
         <Results />
       </div>
     );

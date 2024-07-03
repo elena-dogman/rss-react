@@ -1,0 +1,12 @@
+.results {
+  display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.character-image {
+  padding: 20px;
+  height: auto;
+  width: 20%;
+}
