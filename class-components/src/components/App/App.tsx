@@ -1,46 +1,33 @@
 import React from 'react';
 import styles from './App.module.scss';
 import SearchBar from '../SearchBar/SearchBar';
-import Results from '../Results/Results';
-
-interface Character {
-  name: string;
-  gender: string;
-  height: string;
-  eye_color: string;
-  url: string;
-}
+import MainPage from '../../pages/MainPage';
 
 interface AppState {
-  characters: Character[];
+  searchTerm: string;
 }
 
 class App extends React.Component<{}, AppState> {
   constructor(props: {}) {
     super(props);
     this.state = {
-      characters: [],
+      searchTerm: '',
     };
   }
 
   handleSearch = (term: string) => {
-    fetch(`https://swapi.dev/api/people/?search=${term}`)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({ characters: data.results });
-      })
-      .catch(error => {
-        console.error('Error fetching characters:', error);
-      });
+    this.setState({ searchTerm: term });
   };
 
   render() {
+    const { searchTerm } = this.state;
+
     return (
       <div className={styles.app}>
         <header className={styles.header}>
           <SearchBar onSearch={this.handleSearch} />
         </header>
-        <Results characters={this.state.characters} />
+        <MainPage searchTerm={searchTerm} />
       </div>
     );
   }

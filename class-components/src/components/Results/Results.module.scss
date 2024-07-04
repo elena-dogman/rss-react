@@ -1,20 +1,40 @@
+@import '../../styles/variables.scss';
+
 .results {
   display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    width: 100%;
-    margin-top: 40px;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-top: 40px;
 }
 
-.character-image {
-  padding: 20px;
-  height: auto;
-  width: 20%;
+.results-image {
+  margin-left: 20px;
+  width: 340px;
+}
+
+.characters-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+  box-sizing: border-box;
 }
 
 .character {
+  display: flex;
+  flex-direction: column;
   border-radius: 8px;
   box-shadow: 0 0 50px 0 #5750ea;
   color: white;
-  min-width: 300px;
+  min-width: 150px;
+  min-height: 270px;
+  padding: 10px 20px;
+  font-size: 18px;
+  background-color: black;
+}
+
+.character-name {
+  font-family: $font-family-heading;
+  color: yellow;
+  font-size: $font-size-heading;
 }

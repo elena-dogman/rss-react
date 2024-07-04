@@ -7,7 +7,7 @@
   max-width: 200px;
 }
 
-.search__input {
+.search-input {
   flex: 1;
   padding: 6px;
   font-size: 16px;
@@ -19,7 +19,7 @@
   color: white;
 }
 
-.search__button {
+.search-button {
   margin-left: 10px;
   padding: 8px 16px;
   background-color: #343a40;
@@ -33,6 +33,6 @@
   font-size: $font-size-base;
 }
 
-.search__button:hover {
+.search-button:hover {
   background-color: #23272b;
 }

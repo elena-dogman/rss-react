@@ -17,25 +17,31 @@ class Results extends React.Component<ResultsProps> {
   render() {
     const { characters } = this.props;
 
-    if (!characters.length) {
-      return <div className={styles.results}>No character data available</div>;
-    }
-
     return (
       <div className={styles.results}>
-        <img
+        <div className={styles["characters-container"]}>
+                  <img
           src="src/assets/r2d2.png"
-          className={styles['character-image']}
+          className={styles['results-image']}
           alt="R2D2"
-        />
+          />
+          <div className={styles["characters-container"]}>
         {characters.map((character) => (
           <div key={character.url} className={styles.character}>
-            <h2>{character.name}</h2>
-            <p><strong>Gender:</strong> {character.gender}</p>
-            <p><strong>Height:</strong> {character.height}</p>
-            <p><strong>Eye Color:</strong> {character.eye_color}</p>
+            <h2 className={styles['character-name']}>{character.name}</h2>
+            <p>
+              <strong>Gender:</strong> {character.gender}
+            </p>
+            <p>
+              <strong>Height:</strong> {character.height}
+            </p>
+            <p>
+              <strong>Eye Color:</strong> {character.eye_color}
+            </p>
           </div>
         ))}
+            </div>
+          </div>
       </div>
     );
   }

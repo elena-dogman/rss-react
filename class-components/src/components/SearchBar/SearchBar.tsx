@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styles from './SearchBar.module.scss';
 
 interface SearchBarProps {
@@ -7,13 +7,17 @@ interface SearchBarProps {
 
 interface SearchBarState {
   searchTerm: string;
+  placeholder: string;
 }
 
-class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
+const placeholder = localStorage.getItem('searchTerm');
+
+class SearchBar extends Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
     super(props);
     this.state = {
-      searchTerm: localStorage.getItem('searchTerm') || '',
+      searchTerm: '',
+      placeholder: localStorage.getItem('searchTerm') || 'Search for characters'
     };
   }
 
@@ -21,25 +25,24 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
     this.setState({ searchTerm: event.target.value });
   };
 
-  handleSearch = () => {
-    const trimmedTerm = this.state.searchTerm.trim();
-    localStorage.setItem('searchTerm', trimmedTerm);
-    this.props.onSearch(trimmedTerm);
+  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    this.props.onSearch(this.state.searchTerm);
+    localStorage.setItem('searchTerm', this.state.searchTerm)
   };
 
   render() {
     return (
-      <div className={styles.search}>
+      <form className={styles.search} onSubmit={this.handleSubmit}>
         <input
           type="text"
+          className={styles["search-input"]}
           value={this.state.searchTerm}
-          className={styles.search__input}
           onChange={this.handleChange}
+          placeholder={placeholder}
         />
-        <button className={styles.search__button} onClick={this.handleSearch}>
-          Search
-        </button>
-      </div>
+        <button className={styles["search-button"]} type="submit">Search</button>
+      </form>
     );
   }
 }
