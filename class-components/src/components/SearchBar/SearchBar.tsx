@@ -43,7 +43,11 @@ class SearchBar extends Component<SearchBarProps, SearchBarState> {
           placeholder={this.state.placeholder}
         />
         <button className={styles['search-button']} type="submit">
-          Search
+          <img
+            src="src/assets/search.png"
+            alt="Search"
+            className={styles['search-image']}
+          />
         </button>
       </form>
     );

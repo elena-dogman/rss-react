@@ -15,17 +15,15 @@
   border-radius: 20px;
   outline: none;
   box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
-  background-color: #343a40;
+  background-color: black;
   color: white;
 }
 
 .search-button {
-  margin-left: 10px;
-  padding: 8px 16px;
-  background-color: #E4D00A;
-  color: black;
+  background: none;
+  margin-left: -35px;
+  padding: 8px 0px;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
@@ -33,6 +31,7 @@
   font-size: $font-size-base;
 }
 
-.search-button:hover {
-  background-color: #23272b;
+.search-image {
+  width: 22px;
+  height: 22px;
 }

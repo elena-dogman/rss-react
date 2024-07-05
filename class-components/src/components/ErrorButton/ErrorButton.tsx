@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import styles from './ErrorButton.module.scss'
+import styles from './ErrorButton.module.scss';
 
 interface ErrorButtonState {
   throwError: boolean;
@@ -17,13 +17,13 @@ class ErrorButton extends Component<{}, ErrorButtonState> {
 
   render() {
     if (this.state.throwError) {
-      throw new Error("Test error");
+      throw new Error('Test error');
     }
 
     return (
-      <button
-        className={styles["error-button"]}
-        onClick={this.handleClick}>Throw Error</button>
+      <button className={styles['error-button']} onClick={this.handleClick}>
+         Error
+      </button>
     );
   }
 }

@@ -4,7 +4,6 @@ import App from './components/App/App.js';
 import './index.scss';
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary';
 
-
 const rootElement = document.getElementById('root');
 if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
