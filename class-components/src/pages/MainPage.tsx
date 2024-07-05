@@ -68,7 +68,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.fetchCharacters(this.props.searchTerm, page);
   };
 
-    handleNextPage = () => {
+  handleNextPage = () => {
     const { currentPage, totalPages } = this.state;
     if (currentPage < totalPages) {
       this.fetchCharacters(this.props.searchTerm, currentPage + 1);
@@ -82,7 +82,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     }
   };
 
- renderPagination = () => {
+  renderPagination = () => {
     const { currentPage, totalPages } = this.state;
 
     return (
@@ -94,7 +94,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         >
           &lt;
         </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
             className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
@@ -112,7 +112,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         </button>
       </div>
     );
- };
+  };
 
   render() {
     const { characters, isLoading } = this.state;
