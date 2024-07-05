@@ -62,24 +62,51 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.fetchCharacters(this.props.searchTerm, page);
   };
 
-  renderPagination = () => {
-    const { currentPage, totalPages } = this.state;
+  handleNextPage = () => {
+  const { currentPage, totalPages } = this.state;
+  if (currentPage < totalPages) {
+    this.fetchCharacters(this.props.searchTerm, currentPage + 1);
+  }
+};
 
-    const pages = [];
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(
+handlePreviousPage = () => {
+  const { currentPage } = this.state;
+  if (currentPage > 1) {
+    this.fetchCharacters(this.props.searchTerm, currentPage - 1);
+  }
+};
+
+renderPagination = () => {
+  const { currentPage, totalPages } = this.state;
+
+  return (
+    <div className={styles.pagination}>
+      <button
+        className={styles.pageButton}
+        onClick={this.handlePreviousPage}
+        disabled={currentPage === 1}
+      >
+        &lt;
+      </button>
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
         <button
-          key={i}
-          className={`${styles.pageButton} ${currentPage === i ? styles.activePage : ''}`}
-          onClick={() => this.handlePageChange(i)}
+          key={page}
+          className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
+          onClick={() => this.handlePageChange(page)}
         >
-          {i}
+          {page}
         </button>
-      );
-    }
-
-    return <div className={styles.pagination}>{pages}</div>;
-  };
+      ))}
+      <button
+        className={styles.pageButton}
+        onClick={this.handleNextPage}
+        disabled={currentPage === totalPages}
+      >
+        &gt;
+      </button>
+    </div>
+  );
+};
 
   render() {
     const { characters } = this.state;

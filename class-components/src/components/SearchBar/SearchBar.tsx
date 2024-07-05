@@ -17,7 +17,8 @@ class SearchBar extends Component<SearchBarProps, SearchBarState> {
     super(props);
     this.state = {
       searchTerm: '',
-      placeholder: localStorage.getItem('searchTerm') || 'Search for characters'
+      placeholder:
+        localStorage.getItem('searchTerm') || 'Search for characters',
     };
   }
 
@@ -28,7 +29,7 @@ class SearchBar extends Component<SearchBarProps, SearchBarState> {
   handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     this.props.onSearch(this.state.searchTerm);
-    localStorage.setItem('searchTerm', this.state.searchTerm)
+    localStorage.setItem('searchTerm', this.state.searchTerm);
   };
 
   render() {
@@ -36,12 +37,14 @@ class SearchBar extends Component<SearchBarProps, SearchBarState> {
       <form className={styles.search} onSubmit={this.handleSubmit}>
         <input
           type="text"
-          className={styles["search-input"]}
+          className={styles['search-input']}
           value={this.state.searchTerm}
           onChange={this.handleChange}
-          placeholder={placeholder}
+          placeholder={this.state.placeholder}
         />
-        <button className={styles["search-button"]} type="submit">Search</button>
+        <button className={styles['search-button']} type="submit">
+          Search
+        </button>
       </form>
     );
   }
