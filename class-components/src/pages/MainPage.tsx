@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './MainPage.module.scss';
 import Results from '../components/Results/Results';
+import Loader from '../components/Loader/Loader';
 
 interface Character {
   name: string;
@@ -18,6 +19,7 @@ interface MainPageState {
   characters: Character[];
   currentPage: number;
   totalPages: number;
+  isLoading: boolean;
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
@@ -27,6 +29,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       characters: [],
       currentPage: 1,
       totalPages: 0,
+      isLoading: false,
     };
   }
 
@@ -43,6 +46,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   }
 
   fetchCharacters = (term: string, page: number) => {
+    this.setState({ isLoading: true });
     fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`)
       .then((response) => response.json())
       .then((data) => {
@@ -51,10 +55,12 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
           characters: data.results,
           currentPage: page,
           totalPages: totalPages,
+          isLoading: false,
         });
       })
       .catch((error) => {
         console.error('Error fetching characters:', error);
+        this.setState({ isLoading: false });
       });
   };
 
@@ -62,58 +68,38 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     this.fetchCharacters(this.props.searchTerm, page);
   };
 
-  handleNextPage = () => {
-  const { currentPage, totalPages } = this.state;
-  if (currentPage < totalPages) {
-    this.fetchCharacters(this.props.searchTerm, currentPage + 1);
-  }
-};
+  renderPagination = () => {
+    const { currentPage, totalPages } = this.state;
 
-handlePreviousPage = () => {
-  const { currentPage } = this.state;
-  if (currentPage > 1) {
-    this.fetchCharacters(this.props.searchTerm, currentPage - 1);
-  }
-};
-
-renderPagination = () => {
-  const { currentPage, totalPages } = this.state;
-
-  return (
-    <div className={styles.pagination}>
-      <button
-        className={styles.pageButton}
-        onClick={this.handlePreviousPage}
-        disabled={currentPage === 1}
-      >
-        &lt;
-      </button>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+    const pages = [];
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push(
         <button
-          key={page}
-          className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
-          onClick={() => this.handlePageChange(page)}
+          key={i}
+          className={`${styles.pageButton} ${currentPage === i ? styles.activePage : ''}`}
+          onClick={() => this.handlePageChange(i)}
         >
-          {page}
-        </button>
-      ))}
-      <button
-        className={styles.pageButton}
-        onClick={this.handleNextPage}
-        disabled={currentPage === totalPages}
-      >
-        &gt;
-      </button>
-    </div>
-  );
-};
+          {i}
+        </button>,
+      );
+    }
+
+    return <div className={styles.pagination}>{pages}</div>;
+  };
 
   render() {
-    const { characters } = this.state;
+    const { characters, isLoading } = this.state;
 
     return (
       <div className={styles.mainPage}>
-        <Results characters={characters} />
+        {isLoading ? (
+          <div className={styles.loaderWrapper}>
+            <Loader />
+            <span className={styles.loadingText}>Loading</span>
+          </div>
+        ) : (
+          <Results characters={characters} />
+        )}
         {this.renderPagination()}
       </div>
     );
