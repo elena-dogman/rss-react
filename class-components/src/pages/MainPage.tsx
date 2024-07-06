@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios'; // Убедитесь, что axios правильно импортирован
+import axios from 'axios';
 import styles from './MainPage.module.scss';
 import Results from '../components/Results/Results';
 import Loader from '../components/Loader/Loader';
@@ -109,39 +109,43 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   };
 
   renderPagination = () => {
-    const { currentPage, totalPages } = this.state;
+  const { currentPage, totalPages, characters } = this.state;
 
-    return (
-      <div className={styles.pagination}>
+  if (characters.length === 0) {
+    return null; // Не рендерим пагинацию, если нет результатов поиска
+  }
+
+  return (
+    <div className={styles.pagination}>
+      <button
+        className={styles.pageButton}
+        onClick={this.handlePreviousPage}
+        disabled={currentPage === 1}
+      >
+        &lt;
+      </button>
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
         <button
-          className={styles.pageButton}
-          onClick={this.handlePreviousPage}
-          disabled={currentPage === 1}
+          key={page}
+          className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
+          onClick={() => this.handlePageChange(page)}
         >
-          &lt;
+          {page}
         </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-          <button
-            key={page}
-            className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
-            onClick={() => this.handlePageChange(page)}
-          >
-            {page}
-          </button>
-        ))}
-        <button
-          className={styles.pageButton}
-          onClick={this.handleNextPage}
-          disabled={currentPage === totalPages}
-        >
-          &gt;
-        </button>
-      </div>
-    );
-  };
+      ))}
+      <button
+        className={styles.pageButton}
+        onClick={this.handleNextPage}
+        disabled={currentPage === totalPages}
+      >
+        &gt;
+      </button>
+    </div>
+  );
+};
 
   render() {
-    const { characters, isLoading, homeworlds } = this.state;
+    const { characters, isLoading } = this.state;
 
     return (
       <div className={styles.mainPage}>
@@ -150,8 +154,22 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             <Loader />
             <span className={styles.loadingText}>Loading</span>
           </div>
+        ) : characters.length === 0 ? (
+            <div className={styles["no-results"]}>
+            <img
+        src="src/assets/yoda.png"
+        className={styles["no-results-image"]}
+        alt="Yoda"
+              />
+                <div className={styles['no-results-content']}>
+            <h1 className={styles['no-results-title']}>
+              FOUND NO RESULTS YOU HAVE
+            </h1>
+            <p className={styles['no-results-text']}>Change your search query you must</p>
+          </div>
+          </div>
         ) : (
-          <Results characters={characters} homeworlds={homeworlds} />
+          <Results characters={characters} homeworlds={this.state.homeworlds} />
         )}
         {this.renderPagination()}
       </div>

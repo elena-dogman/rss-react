@@ -40,7 +40,8 @@ class Results extends React.Component<ResultsProps> {
                 <strong>Eye Color:</strong> {character.eye_color}
               </p>
               <p>
-                <strong>Homeworld:</strong> {homeworlds[character.homeworld] || 'Loading...'}
+                <strong>Homeworld:</strong>{' '}
+                {homeworlds[character.homeworld] || 'Loading...'}
               </p>
             </div>
           ))}
