@@ -9,8 +9,6 @@ interface ErrorBoundaryState {
   hasError: boolean;
 }
 
-const a = 1;
-
 class ErrorBoundary extends React.Component<
   ErrorBoundaryProps,
   ErrorBoundaryState
