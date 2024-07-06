@@ -19,3 +19,9 @@
   .error-button:hover {
     background-color: #23272b;
   }
+
+  @media (max-width: 425px) {
+    .error-button {
+      right: -5%;
+    }
+  }

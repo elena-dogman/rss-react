@@ -19,12 +19,12 @@ class Results extends React.Component<ResultsProps> {
 
     return (
       <div className={styles.results}>
-        <div className={styles['characters-container']}>
-          <img
+            <img
             src="src/assets/r2d2.png"
             className={styles['results-image']}
             alt="R2D2"
           />
+        <div className={styles['characters-container']}>
           <div className={styles['characters-container']}>
             {characters.map((character) => (
               <div key={character.url} className={styles.character}>
