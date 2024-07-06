@@ -10,7 +10,7 @@
 
 .results-image {
   width: 120px;
-  margin-left: 20px;
+  margin: 0 0 10px;
 }
 
 .characters-container {
@@ -28,10 +28,10 @@
   border-radius: 8px;
   box-shadow: 0 0 50px 0 #5750ea;
   color: white;
-  width: 150px;
+  width: 180px;
   min-height: 200px;
   padding: 10px 20px;
-  font-size: 18px;
+  font-size: 16px;
   background-color: black;
 }
 
@@ -59,8 +59,4 @@
     .results {
       align-items: center;
     }
-
-    .results-image {
-    margin-bottom: 20px;
-  }
 }

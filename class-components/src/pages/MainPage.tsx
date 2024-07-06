@@ -1,13 +1,16 @@
 import React from 'react';
+import axios from 'axios'; // Убедитесь, что axios правильно импортирован
 import styles from './MainPage.module.scss';
 import Results from '../components/Results/Results';
 import Loader from '../components/Loader/Loader';
 
 interface Character {
   name: string;
+  birth_year: string;
   gender: string;
   height: string;
   eye_color: string;
+  homeworld: string;
   url: string;
 }
 
@@ -20,6 +23,7 @@ interface MainPageState {
   currentPage: number;
   totalPages: number;
   isLoading: boolean;
+  homeworlds: { [url: string]: string };
 }
 
 class MainPage extends React.Component<MainPageProps, MainPageState> {
@@ -30,6 +34,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       currentPage: 1,
       totalPages: 0,
       isLoading: false,
+      homeworlds: {},
     };
   }
 
@@ -51,17 +56,38 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       .then((response) => response.json())
       .then((data) => {
         const totalPages = Math.ceil(data.count / 10);
-        this.setState({
-          characters: data.results,
-          currentPage: page,
-          totalPages: totalPages,
-          isLoading: false,
+        this.setState({ characters: data.results, currentPage: page, totalPages }, () => {
+          this.fetchHomeworlds(data.results);
         });
       })
       .catch((error) => {
         console.error('Error fetching characters:', error);
         this.setState({ isLoading: false });
       });
+  };
+
+  fetchHomeworlds = async (characters: Character[]) => {
+    const homeworldsPromises = characters.map(async (character) => {
+      if (!this.state.homeworlds[character.homeworld]) {
+        const response = await axios.get(character.homeworld);
+        return { url: character.homeworld, name: response.data.name };
+      }
+      return null;
+    });
+
+    const homeworldsData = await Promise.all(homeworldsPromises);
+    const homeworlds: { [url: string]: string } = {};
+
+    homeworldsData.forEach((homeworld) => {
+      if (homeworld) {
+        homeworlds[homeworld.url] = homeworld.name;
+      }
+    });
+
+    this.setState((prevState) => ({
+      homeworlds: { ...prevState.homeworlds, ...homeworlds },
+      isLoading: false,
+    }));
   };
 
   handlePageChange = (page: number) => {
@@ -115,7 +141,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   };
 
   render() {
-    const { characters, isLoading } = this.state;
+    const { characters, isLoading, homeworlds } = this.state;
 
     return (
       <div className={styles.mainPage}>
@@ -125,7 +151,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             <span className={styles.loadingText}>Loading</span>
           </div>
         ) : (
-          <Results characters={characters} />
+          <Results characters={characters} homeworlds={homeworlds} />
         )}
         {this.renderPagination()}
       </div>
