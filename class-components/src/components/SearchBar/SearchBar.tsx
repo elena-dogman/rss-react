@@ -10,8 +10,6 @@ interface SearchBarState {
   placeholder: string;
 }
 
-const placeholder = localStorage.getItem('searchTerm');
-
 class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
     super(props);

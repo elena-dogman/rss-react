@@ -8,8 +8,8 @@ interface AppState {
   searchTerm: string;
 }
 
-class App extends React.Component<{}, AppState> {
-  constructor(props: {}) {
+class App extends React.Component<Record<string, never>, AppState> {
+  constructor(props: Record<string, never>) {
     super(props);
     this.state = {
       searchTerm: '',

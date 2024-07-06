@@ -5,8 +5,11 @@ interface ErrorButtonState {
   throwError: boolean;
 }
 
-class ErrorButton extends React.Component<{}, ErrorButtonState> {
-  constructor(props: {}) {
+class ErrorButton extends React.Component<
+  Record<string, never>,
+  ErrorButtonState
+> {
+  constructor(props: Record<string, never>) {
     super(props);
     this.state = { throwError: false };
   }
