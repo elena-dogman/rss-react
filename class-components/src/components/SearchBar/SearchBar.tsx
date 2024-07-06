@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from './SearchBar.module.scss';
 
 interface SearchBarProps {
@@ -12,7 +12,7 @@ interface SearchBarState {
 
 const placeholder = localStorage.getItem('searchTerm');
 
-class SearchBar extends Component<SearchBarProps, SearchBarState> {
+class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
     super(props);
     this.state = {

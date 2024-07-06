@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styles from './ErrorButton.module.scss';
 
 interface ErrorButtonState {
   throwError: boolean;
 }
 
-class ErrorButton extends Component<{}, ErrorButtonState> {
+class ErrorButton extends React.Component<{}, ErrorButtonState> {
   constructor(props: {}) {
     super(props);
     this.state = { throwError: false };

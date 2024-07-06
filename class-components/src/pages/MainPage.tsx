@@ -56,9 +56,12 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       .then((response) => response.json())
       .then((data) => {
         const totalPages = Math.ceil(data.count / 10);
-        this.setState({ characters: data.results, currentPage: page, totalPages }, () => {
-          this.fetchHomeworlds(data.results);
-        });
+        this.setState(
+          { characters: data.results, currentPage: page, totalPages },
+          () => {
+            this.fetchHomeworlds(data.results);
+          },
+        );
       })
       .catch((error) => {
         console.error('Error fetching characters:', error);
@@ -109,40 +112,40 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   };
 
   renderPagination = () => {
-  const { currentPage, totalPages, characters } = this.state;
+    const { currentPage, totalPages, characters } = this.state;
 
-  if (characters.length === 0) {
-    return null; // Не рендерим пагинацию, если нет результатов поиска
-  }
+    if (characters.length === 0) {
+      return null;
+    }
 
-  return (
-    <div className={styles.pagination}>
-      <button
-        className={styles.pageButton}
-        onClick={this.handlePreviousPage}
-        disabled={currentPage === 1}
-      >
-        &lt;
-      </button>
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+    return (
+      <div className={styles.pagination}>
         <button
-          key={page}
-          className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
-          onClick={() => this.handlePageChange(page)}
+          className={styles.pageButton}
+          onClick={this.handlePreviousPage}
+          disabled={currentPage === 1}
         >
-          {page}
+          &lt;
         </button>
-      ))}
-      <button
-        className={styles.pageButton}
-        onClick={this.handleNextPage}
-        disabled={currentPage === totalPages}
-      >
-        &gt;
-      </button>
-    </div>
-  );
-};
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+          <button
+            key={page}
+            className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
+            onClick={() => this.handlePageChange(page)}
+          >
+            {page}
+          </button>
+        ))}
+        <button
+          className={styles.pageButton}
+          onClick={this.handleNextPage}
+          disabled={currentPage === totalPages}
+        >
+          &gt;
+        </button>
+      </div>
+    );
+  };
 
   render() {
     const { characters, isLoading } = this.state;
@@ -155,18 +158,20 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
             <span className={styles.loadingText}>Loading</span>
           </div>
         ) : characters.length === 0 ? (
-            <div className={styles["no-results"]}>
+          <div className={styles['no-results']}>
             <img
-        src="src/assets/yoda.png"
-        className={styles["no-results-image"]}
-        alt="Yoda"
-              />
-                <div className={styles['no-results-content']}>
-            <h1 className={styles['no-results-title']}>
-              FOUND NO RESULTS YOU HAVE
-            </h1>
-            <p className={styles['no-results-text']}>Change your search query you must</p>
-          </div>
+              src="src/assets/yoda.png"
+              className={styles['no-results-image']}
+              alt="Yoda"
+            />
+            <div className={styles['no-results-content']}>
+              <h1 className={styles['no-results-title']}>
+                FOUND NO RESULTS YOU HAVE
+              </h1>
+              <p className={styles['no-results-text']}>
+                Change your search query you must
+              </p>
+            </div>
           </div>
         ) : (
           <Results characters={characters} homeworlds={this.state.homeworlds} />
