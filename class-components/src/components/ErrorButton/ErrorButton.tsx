@@ -20,7 +20,7 @@ class ErrorButton extends React.Component<
 
   render() {
     if (this.state.throwError) {
-      throw new Error('Test error');
+      console.error('Test error');
     }
 
     return (
