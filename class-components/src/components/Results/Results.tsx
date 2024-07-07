@@ -22,7 +22,7 @@ class Results extends React.Component<ResultsProps> {
     return (
       <div className={styles.results}>
         <img
-          src="src/assets/r2d2.png"
+          src="public\assets\r2d2.png"
           className={styles['results-image']}
           alt="R2D2"
         />

@@ -42,7 +42,7 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
         />
         <button className={styles['search-button']} type="submit">
           <img
-            src="src/assets/search.png"
+            src="public\assets\search.png"
             alt="Search"
             className={styles['search-image']}
           />
