@@ -30,10 +30,7 @@ class ErrorBoundary extends React.Component<
     if (this.state.hasError) {
       return (
         <div className={styles['error-container']}>
-          <img
-            src="public\assets\C-3PO.png"
-            className={styles['error-image']}
-          ></img>
+          <img src="/assets/C-3PO.png" className={styles['error-image']}></img>
           <div className={styles['error-content']}>
             <h1 className={styles['error-title']}>
               Oops... Something went wrong

@@ -160,7 +160,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
         ) : characters.length === 0 ? (
           <div className={styles['no-results']}>
             <img
-              src="public\assets\yoda.png"
+              src="/assets/yoda.png"
               className={styles['no-results-image']}
               alt="Yoda"
             />
