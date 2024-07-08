@@ -14,9 +14,8 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
   constructor(props: SearchBarProps) {
     super(props);
     this.state = {
-      searchTerm: '',
-      placeholder:
-        localStorage.getItem('searchTerm') || 'Search for characters',
+      searchTerm: localStorage.getItem('searchTerm') || '',
+      placeholder: 'Search for characters',
     };
   }
 

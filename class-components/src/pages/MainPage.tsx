@@ -39,7 +39,9 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
   }
 
   componentDidMount() {
-    this.fetchCharacters(this.props.searchTerm, 1);
+    const savedSearchTerm =
+      localStorage.getItem('searchTerm') || this.props.searchTerm;
+    this.fetchCharacters(savedSearchTerm, 1);
   }
 
   componentDidUpdate(prevProps: MainPageProps) {
