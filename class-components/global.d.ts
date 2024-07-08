@@ -3,7 +3,7 @@ declare module '*.module.scss' {
   export default classes;
 }
 
-declare module "*.svg" {
-  const content: any;
+declare module '*.svg' {
+  const content: string;
   export default content;
 }
