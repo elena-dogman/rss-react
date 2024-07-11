@@ -10,7 +10,6 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
@@ -26,7 +25,6 @@ module.exports = {
   plugins: [
     'react-refresh',
     'react-compiler',
-    'prettier',
     '@typescript-eslint',
   ],
   rules: {
@@ -35,6 +33,5 @@ module.exports = {
     'react-compiler/react-compiler': 'error',
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
-    'prettier/prettier': 'error',
   },
 };
