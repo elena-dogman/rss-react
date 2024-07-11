@@ -1,43 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './SearchBar.module.scss';
 
 interface SearchBarProps {
   onSearch: (term: string) => void;
 }
 
-interface SearchBarState {
-  searchTerm: string;
-  placeholder: string;
-}
+const useSearchTerm = () => {
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
 
-class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
-  constructor(props: SearchBarProps) {
-    super(props);
-    this.state = {
-      searchTerm: localStorage.getItem('searchTerm') || '',
-      placeholder: 'Search for characters',
+  useEffect(() => {
+    return () => {
+      localStorage.setItem('searchTerm', searchTerm)
     };
-  }
+  }, [searchTerm]);
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: event.target.value });
+  return [searchTerm, setSearchTerm] as const;
+};
+
+const SearchBar: React.FC<SearchBarProps> = ( {onSearch} ) => {
+  const [searchTerm, setSearchTerm] = useSearchTerm();
+  const [placeholder] = useState('Search for characters');
+
+ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+ const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.onSearch(this.state.searchTerm);
-    localStorage.setItem('searchTerm', this.state.searchTerm);
+    onSearch(searchTerm);
+    localStorage.setItem('searchTerm', searchTerm);
   };
 
-  render() {
     return (
-      <form className={styles.search} onSubmit={this.handleSubmit}>
+      <form className={styles.search} onSubmit={handleSubmit}>
         <input
           type="text"
           className={styles['search-input']}
-          value={this.state.searchTerm}
-          onChange={this.handleChange}
-          placeholder={this.state.placeholder}
+          value={searchTerm}
+          onChange={handleChange}
+          placeholder={placeholder}
         />
         <button className={styles['search-button']} type="submit">
           <img
@@ -49,6 +50,5 @@ class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
       </form>
     );
   }
-}
 
 export default SearchBar;
