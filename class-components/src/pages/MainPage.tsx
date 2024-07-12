@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import styles from './MainPage.module.scss';
 import Results from '../components/Results/Results';
@@ -18,62 +18,16 @@ interface MainPageProps {
   searchTerm: string;
 }
 
-interface MainPageState {
-  characters: Character[];
-  currentPage: number;
-  totalPages: number;
-  isLoading: boolean;
-  homeworlds: { [url: string]: string };
-}
+const MainPage: React.FC<MainPageProps> = ({ searchTerm }) => {
+  const [characters, setCharacters] = useState<Character[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [homeworlds, setHomeworlds] = useState<{ [url: string]: string }>({});
 
-class MainPage extends React.Component<MainPageProps, MainPageState> {
-  constructor(props: MainPageProps) {
-    super(props);
-    this.state = {
-      characters: [],
-      currentPage: 1,
-      totalPages: 0,
-      isLoading: false,
-      homeworlds: {},
-    };
-  }
-
-  componentDidMount() {
-    const savedSearchTerm =
-      localStorage.getItem('searchTerm') || this.props.searchTerm;
-    this.fetchCharacters(savedSearchTerm, 1);
-  }
-
-  componentDidUpdate(prevProps: MainPageProps) {
-    if (prevProps.searchTerm !== this.props.searchTerm) {
-      this.setState({ characters: [], currentPage: 1, totalPages: 0 }, () => {
-        this.fetchCharacters(this.props.searchTerm, 1);
-      });
-    }
-  }
-
-  fetchCharacters = (term: string, page: number) => {
-    this.setState({ isLoading: true });
-    fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const totalPages = Math.ceil(data.count / 10);
-        this.setState(
-          { characters: data.results, currentPage: page, totalPages },
-          () => {
-            this.fetchHomeworlds(data.results);
-          },
-        );
-      })
-      .catch((error) => {
-        console.error('Error fetching characters:', error);
-        this.setState({ isLoading: false });
-      });
-  };
-
-  fetchHomeworlds = async (characters: Character[]) => {
+  const fetchHomeworlds = useCallback(async (characters: Character[]) => {
     const homeworldsPromises = characters.map(async (character) => {
-      if (!this.state.homeworlds[character.homeworld]) {
+      if (!homeworlds[character.homeworld]) {
         const response = await axios.get(character.homeworld);
         return { url: character.homeworld, name: response.data.name };
       }
@@ -81,41 +35,60 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     });
 
     const homeworldsData = await Promise.all(homeworldsPromises);
-    const homeworlds: { [url: string]: string } = {};
+    const newHomeworlds: { [url: string]: string } = {};
 
     homeworldsData.forEach((homeworld) => {
       if (homeworld) {
-        homeworlds[homeworld.url] = homeworld.name;
+        newHomeworlds[homeworld.url] = homeworld.name;
       }
     });
 
-    this.setState((prevState) => ({
-      homeworlds: { ...prevState.homeworlds, ...homeworlds },
-      isLoading: false,
+    setHomeworlds((prevHomeworlds) => ({
+      ...prevHomeworlds,
+      ...newHomeworlds,
     }));
+    setIsLoading(false);
+  }, [homeworlds]);
+
+  const fetchCharacters = useCallback((term: string, page: number) => {
+    setIsLoading(true);
+    fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const totalPages = Math.ceil(data.count / 10);
+        setCharacters(data.results);
+        setCurrentPage(page);
+        setTotalPages(totalPages);
+        fetchHomeworlds(data.results);
+      })
+      .catch((error) => {
+        console.error('Error fetching characters:', error);
+        setIsLoading(false);
+      });
+  }, [fetchHomeworlds]);
+
+  useEffect(() => {
+    const savedSearchTerm = localStorage.getItem('searchTerm') || searchTerm;
+    fetchCharacters(savedSearchTerm, 1);
+  }, [searchTerm, fetchCharacters]);
+
+  const handlePageChange = (page: number) => {
+    fetchCharacters(searchTerm, page);
   };
 
-  handlePageChange = (page: number) => {
-    this.fetchCharacters(this.props.searchTerm, page);
-  };
-
-  handleNextPage = () => {
-    const { currentPage, totalPages } = this.state;
+  const handleNextPage = () => {
     if (currentPage < totalPages) {
-      this.fetchCharacters(this.props.searchTerm, currentPage + 1);
+      fetchCharacters(searchTerm, currentPage + 1);
     }
   };
 
-  handlePreviousPage = () => {
-    const { currentPage } = this.state;
+  const handlePreviousPage = () => {
     if (currentPage > 1) {
-      this.fetchCharacters(this.props.searchTerm, currentPage - 1);
+      fetchCharacters(searchTerm, currentPage - 1);
     }
   };
 
-  renderPagination = () => {
-    const { currentPage, totalPages, characters } = this.state;
-
+  const renderPagination = () => {
     if (characters.length === 0) {
       return null;
     }
@@ -124,7 +97,7 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
       <div className={styles.pagination}>
         <button
           className={styles.pageButton}
-          onClick={this.handlePreviousPage}
+          onClick={handlePreviousPage}
           disabled={currentPage === 1}
         >
           &lt;
@@ -133,14 +106,14 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
           <button
             key={page}
             className={`${styles.pageButton} ${currentPage === page ? styles.activePage : ''}`}
-            onClick={() => this.handlePageChange(page)}
+            onClick={() => handlePageChange(page)}
           >
             {page}
           </button>
         ))}
         <button
           className={styles.pageButton}
-          onClick={this.handleNextPage}
+          onClick={handleNextPage}
           disabled={currentPage === totalPages}
         >
           &gt;
@@ -149,39 +122,35 @@ class MainPage extends React.Component<MainPageProps, MainPageState> {
     );
   };
 
-  render() {
-    const { characters, isLoading } = this.state;
-
-    return (
-      <div className={styles.mainPage}>
-        {isLoading ? (
-          <div className={styles.loaderWrapper}>
-            <Loader />
-            <span className={styles.loadingText}>Loading</span>
+  return (
+    <div className={styles.mainPage}>
+      {isLoading ? (
+        <div className={styles.loaderWrapper}>
+          <Loader />
+          <span className={styles.loadingText}>Loading</span>
+        </div>
+      ) : characters.length === 0 ? (
+        <div className={styles['no-results']}>
+          <img
+            src="/assets/yoda.png"
+            className={styles['no-results-image']}
+            alt="Yoda"
+          />
+          <div className={styles['no-results-content']}>
+            <h1 className={styles['no-results-title']}>
+              FOUND NO RESULTS YOU HAVE
+            </h1>
+            <p className={styles['no-results-text']}>
+              Change your search query you must
+            </p>
           </div>
-        ) : characters.length === 0 ? (
-          <div className={styles['no-results']}>
-            <img
-              src="/assets/yoda.png"
-              className={styles['no-results-image']}
-              alt="Yoda"
-            />
-            <div className={styles['no-results-content']}>
-              <h1 className={styles['no-results-title']}>
-                FOUND NO RESULTS YOU HAVE
-              </h1>
-              <p className={styles['no-results-text']}>
-                Change your search query you must
-              </p>
-            </div>
-          </div>
-        ) : (
-          <Results characters={characters} homeworlds={this.state.homeworlds} />
-        )}
-        {this.renderPagination()}
-      </div>
-    );
-  }
-}
+        </div>
+      ) : (
+        <Results characters={characters} homeworlds={homeworlds} />
+      )}
+      {renderPagination()}
+    </div>
+  );
+};
 
 export default MainPage;
