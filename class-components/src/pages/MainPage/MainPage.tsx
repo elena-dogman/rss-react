@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { fetchCharacters, fetchHomeworld, Character } from '../api/characters';
+import { fetchCharacters, fetchHomeworld, Character } from '../../api/characters';
 import styles from './MainPage.module.scss';
-import Results from '../components/Results/Results';
-import Loader from '../components/Loader/Loader';
+import Results from '../../components/Results/Results';
+import Loader from '../../components/Loader/Loader';
 
 interface MainPageProps {
   searchTerm: string;

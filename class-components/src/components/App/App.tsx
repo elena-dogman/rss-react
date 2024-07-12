@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './App.module.scss';
 import SearchBar from '../SearchBar/SearchBar';
-import MainPage from '../../pages/MainPage';
+import MainPage from '../../pages/MainPage/MainPage';
 
 const App: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
