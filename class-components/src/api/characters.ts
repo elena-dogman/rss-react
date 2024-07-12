@@ -1,0 +1,26 @@
+import axios from 'axios';
+
+export interface Character {
+  name: string;
+  birth_year: string;
+  gender: string;
+  height: string;
+  eye_color: string;
+  homeworld: string;
+  url: string;
+}
+
+export const fetchCharacters = async (term: string, page: number) => {
+  const response = await fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`);
+  if (!response.ok) {
+    throw new Error('Error fetching characters');
+  }
+  const data = await response.json();
+  const totalPages = Math.ceil(data.count / 10);
+  return { characters: data.results, totalPages };
+};
+
+export const fetchHomeworld = async (url: string) => {
+  const response = await axios.get(url);
+  return response.data.name;
+};

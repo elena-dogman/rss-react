@@ -1,18 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { fetchCharacters, fetchHomeworld, Character } from '../api/characters';
 import styles from './MainPage.module.scss';
 import Results from '../components/Results/Results';
 import Loader from '../components/Loader/Loader';
-
-interface Character {
-  name: string;
-  birth_year: string;
-  gender: string;
-  height: string;
-  eye_color: string;
-  homeworld: string;
-  url: string;
-}
 
 interface MainPageProps {
   searchTerm: string;
@@ -24,12 +14,13 @@ const MainPage: React.FC<MainPageProps> = ({ searchTerm }) => {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [homeworlds, setHomeworlds] = useState<{ [url: string]: string }>({});
+  const [prevSearchTerm, setPrevSearchTerm] = useState(searchTerm);
 
   const fetchHomeworlds = useCallback(async (characters: Character[]) => {
     const homeworldsPromises = characters.map(async (character) => {
       if (!homeworlds[character.homeworld]) {
-        const response = await axios.get(character.homeworld);
-        return { url: character.homeworld, name: response.data.name };
+        const name = await fetchHomeworld(character.homeworld);
+        return { url: character.homeworld, name };
       }
       return null;
     });
@@ -47,44 +38,44 @@ const MainPage: React.FC<MainPageProps> = ({ searchTerm }) => {
       ...prevHomeworlds,
       ...newHomeworlds,
     }));
-    setIsLoading(false);
   }, [homeworlds]);
 
-  const fetchCharacters = useCallback((term: string, page: number) => {
+  const fetchCharactersData = useCallback(async (term: string, page: number) => {
     setIsLoading(true);
-    fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const totalPages = Math.ceil(data.count / 10);
-        setCharacters(data.results);
-        setCurrentPage(page);
-        setTotalPages(totalPages);
-        fetchHomeworlds(data.results);
-      })
-      .catch((error) => {
-        console.error('Error fetching characters:', error);
-        setIsLoading(false);
-      });
+    try {
+      const { characters, totalPages } = await fetchCharacters(term, page);
+      setCharacters(characters);
+      setCurrentPage(page);
+      setTotalPages(totalPages);
+      await fetchHomeworlds(characters);
+    } catch (error) {
+      console.error('Error fetching characters:', error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
   }, [fetchHomeworlds]);
 
   useEffect(() => {
-    const savedSearchTerm = localStorage.getItem('searchTerm') || searchTerm;
-    fetchCharacters(savedSearchTerm, 1);
-  }, [searchTerm, fetchCharacters]);
+    if (prevSearchTerm !== searchTerm) {
+      setPrevSearchTerm(searchTerm);
+      fetchCharactersData(searchTerm, 1);
+    }
+  }, [searchTerm, prevSearchTerm, fetchCharactersData]);
 
   const handlePageChange = (page: number) => {
-    fetchCharacters(searchTerm, page);
+    fetchCharactersData(searchTerm, page);
   };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
-      fetchCharacters(searchTerm, currentPage + 1);
+      fetchCharactersData(searchTerm, currentPage + 1);
     }
   };
 
   const handlePreviousPage = () => {
     if (currentPage > 1) {
-      fetchCharacters(searchTerm, currentPage - 1);
+      fetchCharactersData(searchTerm, currentPage - 1);
     }
   };
 
