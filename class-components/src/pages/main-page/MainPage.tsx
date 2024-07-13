@@ -3,18 +3,16 @@ import { fetchCharacters, fetchHomeworld, Character } from '../../api/characters
 import styles from './MainPage.module.scss';
 import Results from '../../components/Results/Results';
 import Loader from '../../components/Loader/Loader';
+import { useSearch } from '../../contexts/useSearch';
 
-interface MainPageProps {
-  searchTerm: string;
-}
-
-const MainPage: React.FC<MainPageProps> = ({ searchTerm }) => {
+const MainPage: React.FC = () => {
+  const { searchTerm } = useSearch();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [homeworlds, setHomeworlds] = useState<{ [url: string]: string }>({});
-  const [prevSearchTerm, setPrevSearchTerm] = useState(searchTerm);
+  const [prevSearchTerm, setPrevSearchTerm] = useState('');
 
   const fetchHomeworlds = useCallback(async (characters: Character[]) => {
     const homeworldsPromises = characters.map(async (character) => {

@@ -33,5 +33,7 @@ module.exports = {
     'react-compiler/react-compiler': 'error',
     '@typescript-eslint/ban-types': 'error',
     '@typescript-eslint/no-unused-vars': 'error',
+    'react/jsx-uses-react': 'off',
+    'react/react-in-jsx-scope': 'off',
   },
 };
