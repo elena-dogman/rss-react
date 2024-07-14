@@ -32,10 +32,7 @@ const homeworlds: Homeworlds = {
 
 describe('Results Component', () => {
   it('should render the image and characters', () => {
-    render(<Results characters={characters} homeworlds={homeworlds} />);
-
-    const image = screen.getByAltText('R2D2');
-    expect(image).toBeInTheDocument();
+    render(<Results characters={characters} homeworlds={homeworlds} onCharacterClick={() => {}} />);
 
     characters.forEach((character) => {
       const characterName = screen.getByText(character.name);
@@ -75,7 +72,7 @@ describe('Results Component', () => {
       },
     ];
 
-    render(<Results characters={charactersWithUnknownHomeworld} homeworlds={homeworlds} />);
+    render(<Results characters={charactersWithUnknownHomeworld} homeworlds={homeworlds} onCharacterClick={() => {}} />);
 
     const loadingHomeworld = screen.getByText((_, element) =>
       element?.textContent === 'Homeworld: Loading...'

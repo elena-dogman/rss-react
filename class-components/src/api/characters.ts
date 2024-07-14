@@ -9,10 +9,12 @@ export interface Character {
   url: string;
 }
 
-export const fetchCharacters = async (term: string, page: number) => {
-  const response = await fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`);
+export const fetchCharacters = async (term: string) => {
+  const url = `https://swapi.dev/api/people/?search=${term}`;
+  console.log('Fetching URL:', url);
+  const response = await fetch(url);
   if (!response.ok) {
-    throw new Error('Error fetching characters');
+    throw new Error(`Error fetching characters: ${response.status}`);
   }
   const data = await response.json();
   const totalPages = Math.ceil(data.count / 10);

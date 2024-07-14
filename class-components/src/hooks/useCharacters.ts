@@ -8,6 +8,7 @@ const useCharacters = (searchTerm: string) => {
   const [totalPages, setTotalPages] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [homeworlds, setHomeworlds] = useState<{ [url: string]: string }>({});
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const fetchHomeworlds = useCallback(async (characters: Character[]) => {
@@ -36,14 +37,16 @@ const useCharacters = (searchTerm: string) => {
 
   const fetchCharactersData = useCallback(async (term: string, page: number) => {
     setIsLoading(true);
+    setError(null);
     try {
-      const { characters, totalPages } = await fetchCharacters(term, page);
+      const { characters, totalPages } = await fetchCharacters(term);
       setCharacters(characters);
       setCurrentPage(page);
       setTotalPages(totalPages);
       await fetchHomeworlds(characters);
     } catch (error) {
       console.error('Error fetching characters:', error);
+      setError('Failed to fetch characters. Please try again later.');
     } finally {
       setIsLoading(false);
     }
@@ -61,6 +64,7 @@ const useCharacters = (searchTerm: string) => {
     currentPage,
     totalPages,
     isLoading,
+    error,
     handlePageChange,
     fetchCharactersData,
   };
