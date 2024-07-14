@@ -1,6 +1,6 @@
 import React, { createContext, useState, ReactNode } from 'react';
 
-interface SearchContextProps {
+export interface SearchContextProps {
   searchTerm: string;
   setSearchTerm: (term: string) => void;
 }
