@@ -1,5 +1,26 @@
 @import '../../styles/variables.scss';
 
+.mainPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.results {
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
 .pagination {
   display: flex;
   justify-content: center;

@@ -2,7 +2,6 @@ import axios from 'axios';
 
 export interface Character {
   name: string;
-  birth_year: string;
   gender: string;
   height: string;
   eye_color: string;
@@ -23,4 +22,9 @@ export const fetchCharacters = async (term: string, page: number) => {
 export const fetchHomeworld = async (url: string) => {
   const response = await axios.get(url);
   return response.data.name;
+};
+
+export const fetchCharacterDetails = async (url: string): Promise<Character> => {
+  const response = await axios.get(url);
+  return response.data;
 };
