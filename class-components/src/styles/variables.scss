@@ -1,4 +1,3 @@
-//fonts
 $font-family-base: "Lato", sans-serif;
 $font-family-heading:"Orbitron", sans-serif;
 $font-size-base: 1.6rem;
@@ -6,10 +5,8 @@ $font-size-heading: 1.8rem;
 $font-size-small: 1.4rem;
 $font-size-bigger-heading: 2.2rem;
 
-//colors
 $accent-color: yellow;
 
-//mixins
 @mixin hoverLink {
   &:hover {
     transform: scale(1.1);
