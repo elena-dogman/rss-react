@@ -1,0 +1,3 @@
+#!/bin/sh
+cd class-components
+npm test

@@ -1,38 +1,30 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from './App.module.scss';
-import SearchBar from '../SearchBar/SearchBar';
-import MainPage from '../../pages/MainPage';
-import ErrorButton from '../ErrorButton/ErrorButton';
+import MainPage from '../../pages/main-page/MainPage';
+import NotFoundPage from '../../pages/not-found-page/NotFoundPage';
+import { SearchProvider } from '../../contexts/SearchContext';
+import RootLayout from '../../layouts/root-layout';
+import CharacterDetails from '../CharacterDetails/CharacterDetails';
 
-interface AppState {
-  searchTerm: string;
-}
-
-class App extends React.Component<Record<string, never>, AppState> {
-  constructor(props: Record<string, never>) {
-    super(props);
-    this.state = {
-      searchTerm: '',
-    };
-  }
-
-  handleSearch = (term: string) => {
-    this.setState({ searchTerm: term });
-  };
-
-  render() {
-    const { searchTerm } = this.state;
-
-    return (
-      <div className={styles.app}>
-        <header className={styles.header}>
-          <SearchBar onSearch={this.handleSearch} />
-          <ErrorButton />
-        </header>
-        <MainPage searchTerm={searchTerm} />
-      </div>
-    );
-  }
-}
+const App: React.FC = () => {
+  return (
+    <div className={styles.app}>
+      <SearchProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<MainPage />} />
+              <Route path="details/:id" element={<CharacterDetails character={null} isLoading={false} onClose={function (): void {
+                throw new Error('Function not implemented.');
+              } } homeworld={''} />} />
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
+          </Routes>
+        </Router>
+      </SearchProvider>
+    </div>
+  );
+};
 
 export default App;

@@ -1,0 +1,41 @@
+@import '../../styles/variables.scss';
+
+.not-found-container {
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.not-found-img-left,
+.not-found-img-right {
+  max-height: 350px;
+}
+
+.not-found-content {
+  margin: 0 20px;
+}
+
+.not-found-content-heading {
+  color: #999999;
+  font-size: 2.7rem;
+}
+
+.not-found-content-text {
+  color: white;
+  font-size: 3.5rem;
+}
+
+.go-back-button {
+  background: none;
+  border: none;
+  color: $accent-color;
+  cursor: pointer;
+@include hoverLink;
+}
+
+.go-back-button img {
+  width: 20px;
+  margin-right: 10px;
+}

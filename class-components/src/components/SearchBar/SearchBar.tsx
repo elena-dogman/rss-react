@@ -1,54 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './SearchBar.module.scss';
+import { useSearch } from '../../contexts/useSearch';
 
-interface SearchBarProps {
-  onSearch: (term: string) => void;
-}
+const useSearchTerm = () => {
+  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
 
-interface SearchBarState {
-  searchTerm: string;
-  placeholder: string;
-}
+  useEffect(() => {
+    localStorage.setItem('searchTerm', searchTerm);
+  }, [searchTerm]);
 
-class SearchBar extends React.Component<SearchBarProps, SearchBarState> {
-  constructor(props: SearchBarProps) {
-    super(props);
-    this.state = {
-      searchTerm: localStorage.getItem('searchTerm') || '',
-      placeholder: 'Search for characters',
-    };
-  }
+  return [searchTerm, setSearchTerm] as const;
+};
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchTerm: event.target.value });
+const SearchBar: React.FC = () => {
+  const { setSearchTerm } = useSearch();
+  const [localSearchTerm, setLocalSearchTerm] = useSearchTerm();
+  const [placeholder] = useState('Search for characters');
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setLocalSearchTerm(event.target.value);
   };
 
-  handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    this.props.onSearch(this.state.searchTerm);
-    localStorage.setItem('searchTerm', this.state.searchTerm);
+    setSearchTerm(localSearchTerm);
   };
 
-  render() {
-    return (
-      <form className={styles.search} onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          className={styles['search-input']}
-          value={this.state.searchTerm}
-          onChange={this.handleChange}
-          placeholder={this.state.placeholder}
+  return (
+    <form className={styles.search} onSubmit={handleSubmit}>
+      <input
+        type="text"
+        className={styles['search-input']}
+        value={localSearchTerm}
+        onChange={handleChange}
+        placeholder={placeholder}
+      />
+      <button className={styles['search-button']} type="submit">
+        <img
+          src="/assets/search.png"
+          alt="Search"
+          className={styles['search-image']}
         />
-        <button className={styles['search-button']} type="submit">
-          <img
-            src="/assets/search.png"
-            alt="Search"
-            className={styles['search-image']}
-          />
-        </button>
-      </form>
-    );
-  }
-}
+      </button>
+    </form>
+  );
+};
 
 export default SearchBar;
