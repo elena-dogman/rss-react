@@ -6,10 +6,11 @@ import Loader from '../../components/Loader/Loader';
 import { useSearch } from '../../contexts/useSearch';
 import CharacterDetails from '../../components/CharacterDetails/CharacterDetails';
 import useCharacters from '../../hooks/useCharacters';
-import useCharacterDetails from '../../hooks/useCharacterDetails';
+import { DetailProvider } from '../../contexts/DetailContext';
 import Pagination from '../../components/Pagination/Pagination';
+import useDetail from '../../contexts/useDetail';
 
-const MainPage: React.FC = () => {
+const MainPageContent: React.FC = () => {
   const { searchTerm } = useSearch();
   const {
     characters,
@@ -23,20 +24,13 @@ const MainPage: React.FC = () => {
   const {
     selectedCharacter,
     isDetailLoading,
-    fetchCharacterDetailsById,
-    handleCharacterClick,
     handleCloseDetail,
-  } = useCharacterDetails(currentPage);
+  } = useDetail();
   const location = useLocation();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const page = parseInt(searchParams.get('frontpage') || '1', 10);
-    const detailId = searchParams.get('details');
-
-    if (detailId) {
-      fetchCharacterDetailsById(detailId);
-    }
 
     fetchCharactersData(searchTerm, page);
   }, [location.search, searchTerm]);
@@ -67,7 +61,7 @@ const MainPage: React.FC = () => {
       ) : (
         <div className={styles.content}>
           <div className={styles.results}>
-            <Results characters={characters} homeworlds={homeworlds} onCharacterClick={handleCharacterClick} />
+            <Results characters={characters} homeworlds={homeworlds} />
             <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
           </div>
           {selectedCharacter && (
@@ -85,5 +79,11 @@ const MainPage: React.FC = () => {
     </div>
   );
 };
+
+const MainPage: React.FC = () => (
+  <DetailProvider>
+    <MainPageContent />
+  </DetailProvider>
+);
 
 export default MainPage;
