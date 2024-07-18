@@ -1,0 +1,35 @@
+@import '../../styles/variables.scss';
+
+.error-container {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.error-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.error-text,
+.error-title {
+ color: antiquewhite;
+}
+
+.error-title {
+  font-size: 2.2rem;
+}
+
+.error-text {
+font-size: $font-size-heading;
+}
+
+.error-image {
+  height: 200px;
+}

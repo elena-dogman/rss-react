@@ -1,0 +1,19 @@
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-image: url('../../assets/background.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  background-color: black;
+  }
+

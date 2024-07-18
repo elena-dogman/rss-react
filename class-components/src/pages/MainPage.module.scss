@@ -1,0 +1,64 @@
+@import '../styles/variables.scss';
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 20px;
+}
+
+.pageButton {
+  border: none;
+  background-color: rgb(48, 46, 46);
+  color: white;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 0 10px 3px rgba(8, 112, 248, 0.8);
+  }
+
+  &.activePage {
+    background-color: transparent;
+    color: white;
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}
+
+.no-results {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.no-results-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.no-results-image {
+  height: 400px;
+}
+
+.no-results-text,
+.no-results-title {
+  color: rgb(191, 234, 155);
+}
+
+.no-results-title {
+  font-size: 2.2rem;
+}
+
+.no-results-text {
+  font-size: $font-size-heading;
+}

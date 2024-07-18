@@ -1,0 +1,37 @@
+@import '../../styles/variables.scss';
+
+.search {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  max-width: 200px;
+}
+
+.search-input {
+  flex: 1;
+  padding: 6px;
+  font-size: 16px;
+  border: 2px solid #00BFFF;
+  border-radius: 20px;
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  background-color: black;
+  color: white;
+}
+
+.search-button {
+  background: none;
+  margin-left: -35px;
+  padding: 8px 0px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+}
+
+.search-image {
+  width: 22px;
+  height: 22px;
+}
