@@ -9,8 +9,8 @@ export interface Character {
   url: string;
 }
 
-export const fetchCharacters = async (term: string) => {
-  const url = `https://swapi.dev/api/people/?search=${term}`;
+export const fetchCharacters = async (term: string, page: number = 1) => {
+  const url = `https://swapi.dev/api/people/?search=${term}&page=${page}`;
   console.log('Fetching URL:', url);
   const response = await fetch(url);
   if (!response.ok) {

@@ -1,8 +1,10 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Character, fetchHomeworld, fetchCharacters } from '../api/characters';
+import { useSearch } from '../contexts/useSearch';
 
-const useCharacters = (searchTerm: string) => {
+const useCharacters = () => {
+  const { searchTerm } = useSearch();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -35,11 +37,11 @@ const useCharacters = (searchTerm: string) => {
     }));
   }, [homeworlds]);
 
-  const fetchCharactersData = useCallback(async (term: string, page: number) => {
+  const fetchCharactersData = useCallback(async (page: number) => {
     setIsLoading(true);
     setError(null);
     try {
-      const { characters, totalPages } = await fetchCharacters(term);
+      const { characters, totalPages } = await fetchCharacters(searchTerm, page);
       setCharacters(characters);
       setCurrentPage(page);
       setTotalPages(totalPages);
@@ -50,13 +52,16 @@ const useCharacters = (searchTerm: string) => {
     } finally {
       setIsLoading(false);
     }
-  }, [fetchHomeworlds]);
+  }, [fetchHomeworlds, searchTerm]);
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
-    fetchCharactersData(searchTerm, page);
-    navigate(`/?frontpage=${page}`);
-  }, [fetchCharactersData, searchTerm, navigate]);
+    navigate(`/?page=${page}`);
+  }, [navigate]);
+
+  useEffect(() => {
+    fetchCharactersData(currentPage);
+  }, [currentPage]);
 
   return {
     characters,

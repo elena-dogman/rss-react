@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom';
 import styles from './MainPage.module.scss';
 import Results from '../../components/Results/Results';
 import Loader from '../../components/Loader/Loader';
-import { useSearch } from '../../contexts/useSearch';
 import CharacterDetails from '../../components/CharacterDetails/CharacterDetails';
 import useCharacters from '../../hooks/useCharacters';
 import { DetailProvider } from '../../contexts/DetailContext';
@@ -11,7 +10,6 @@ import Pagination from '../../components/Pagination/Pagination';
 import useDetail from '../../contexts/useDetail';
 
 const MainPageContent: React.FC = () => {
-  const { searchTerm } = useSearch();
   const {
     characters,
     homeworlds,
@@ -20,7 +18,7 @@ const MainPageContent: React.FC = () => {
     isLoading,
     handlePageChange,
     fetchCharactersData
-  } = useCharacters(searchTerm);
+  } = useCharacters();
   const {
     selectedCharacter,
     isDetailLoading,
@@ -30,10 +28,9 @@ const MainPageContent: React.FC = () => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const page = parseInt(searchParams.get('frontpage') || '1', 10);
-
-    fetchCharactersData(searchTerm, page);
-  }, [location.search, searchTerm]);
+    const page = parseInt(searchParams.get('page') || '1', 10);
+    fetchCharactersData(page);
+  }, [location.search]);
 
   return (
     <div className={styles.mainPage}>
