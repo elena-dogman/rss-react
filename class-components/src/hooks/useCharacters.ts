@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Character, fetchHomeworld, fetchCharacters } from '../api/characters';
+import { fetchHomeworld, fetchCharacters } from '../api/characters';
 import { useSearch } from '../contexts/useSearch';
+import { Character } from '../types/types';
 
 const useCharacters = () => {
   const { searchTerm } = useSearch();
