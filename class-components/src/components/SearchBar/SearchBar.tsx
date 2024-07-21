@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './SearchBar.module.scss';
 import { useSearch } from '../../contexts/useSearch';
 
@@ -16,6 +17,7 @@ const SearchBar: React.FC = () => {
   const { setSearchTerm } = useSearch();
   const [localSearchTerm, setLocalSearchTerm] = useSearchTerm();
   const [placeholder] = useState('Search for characters');
+  const navigate = useNavigate();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLocalSearchTerm(event.target.value);
@@ -24,6 +26,7 @@ const SearchBar: React.FC = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSearchTerm(localSearchTerm);
+    navigate(`/?term=${localSearchTerm}&page=1`);
   };
 
   return (

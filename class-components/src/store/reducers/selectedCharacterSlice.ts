@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DetailedCharacter } from "../../components/CharacterDetails/CharacterDetails";
+import { DetailedCharacter } from "../../types/types";
 
 interface SelectedCharacterState {
   character: DetailedCharacter | null;

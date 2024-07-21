@@ -1,22 +1,19 @@
 import React from 'react';
 import styles from './Results.module.scss';
-import { Character } from '../../api/characters';
-import useDetail from '../../contexts/useDetail';
-
+import { Character } from '../../types/types';
 
 interface ResultsProps {
   characters: Character[];
   homeworlds: { [url: string]: string };
+  onCharacterClick: (id: string) => void;
 }
 
-const Results: React.FC<ResultsProps> = ({ characters, homeworlds }) => {
-  const { handleCharacterClick } = useDetail();
-
+const Results: React.FC<ResultsProps> = ({ characters, homeworlds, onCharacterClick }) => {
   return (
     <div className={styles.results}>
       <div className={styles['characters-container']}>
         {characters.map((character) => (
-          <div key={character.url} className={styles.character} onClick={() => handleCharacterClick(character)}>
+          <div key={character.url} className={styles.character} onClick={() => onCharacterClick(character.url)}>
             <h2 className={styles['character-name']}>{character.name}</h2>
             <p>
               <strong>Gender:</strong> {character.gender}

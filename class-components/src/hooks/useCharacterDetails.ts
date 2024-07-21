@@ -1,8 +1,7 @@
 import { useState, useCallback } from 'react';
 import { fetchCharacterDetails } from '../api/characters';
 import { useNavigate } from 'react-router-dom';
-import { DetailedCharacter } from '../components/CharacterDetails/CharacterDetails';
-import { Character } from '../types/types';
+import { Character, DetailedCharacter } from '../types/types';
 
 const useCharacterDetails = (currentPage: number) => {
   const [selectedCharacter, setSelectedCharacter] = useState<DetailedCharacter | null>(null);

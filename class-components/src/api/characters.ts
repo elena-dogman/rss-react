@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Character } from '../types/types';
+import { DetailedCharacter } from '../types/types';
 
 
 export const fetchCharacters = async (term: string, page: number = 1) => {
@@ -19,7 +19,8 @@ export const fetchHomeworld = async (url: string) => {
   return response.data.name;
 };
 
-export const fetchCharacterDetails = async (url: string): Promise<Character> => {
+export const fetchCharacterDetails = async (url: string): Promise<DetailedCharacter> => {
   const response = await axios.get(url);
   return response.data;
 };
+
