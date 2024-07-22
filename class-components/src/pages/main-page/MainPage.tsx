@@ -10,6 +10,7 @@ import HomeworldFetcher from '../../components/HomeworldFetcher/HomeworldFetcher
 import { useFetchCharactersQuery, useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
 import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
 import { DetailProvider } from '../../contexts/DetailContext';
+import { Character } from '../../types/types';
 
 const MainPageContent: React.FC = () => {
   const location = useLocation();
@@ -34,11 +35,11 @@ const MainPageContent: React.FC = () => {
     navigate(`?${params.toString()}`);
   };
 
-  const handleCharacterClick = (id: string) => {
-    const params = new URLSearchParams(location.search);
-    params.set('details', id);
-    navigate(`?${params.toString()}`);
-  };
+const handleCharacterClick = (character: Character) => {
+  const params = new URLSearchParams(location.search);
+  params.set('details', character.url);
+  navigate(`?${params.toString()}`);
+};
 
   const handleCloseDetail = () => {
     const params = new URLSearchParams(location.search);

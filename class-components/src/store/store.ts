@@ -2,6 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import searchReducer from './reducers/searchSlice';
 import charactersReducer from './reducers/charactersSlice';
 import selectedCharacterReducer from './reducers/selectedCharacterSlice';
+import selectedItemsReducer from './reducers/selectedItemsSlice';
 import { apiSlice } from "./reducers/apiSlice";
 
 
@@ -9,6 +10,7 @@ const rootReducer = combineReducers({
   search: searchReducer,
   characters: charactersReducer,
   selectedCharacter: selectedCharacterReducer,
+  selectedItems: selectedItemsReducer,
   [apiSlice.reducerPath]: apiSlice.reducer,
 })
 

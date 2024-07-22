@@ -21,13 +21,17 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  box-shadow: 0 0 50px 0 #5750ea;
+  box-shadow: 0 0 50px -10px #5750ea;
   color: white;
   width: 180px;
   min-height: 200px;
   padding: 10px 20px;
   font-size: 16px;
   background-color: black;
+}
+
+.character.selected {
+  box-shadow: 0 0 40px 0 #0df06f;
 }
 
 .character p {
@@ -38,6 +42,194 @@
   font-family: $font-family-heading;
   color: yellow;
   font-size: $font-size-heading;
+}
+
+.lightsaber {
+  position: absolute;
+  bottom: 2%;
+  right: 10%;
+}
+
+.lightsaber label {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 88;
+  text-indent: -9999px;
+  width: 8px;
+  height: 15px;
+  border-bottom: solid 4px grey;
+  border-top: solid 5px grey;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -o-border-radius: 5px;
+  -ms-border-radius: 5px;
+  background: rgb(226, 226, 226);
+  background: -webkit-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(219, 219, 219, 1) 50%, rgba(209, 209, 209, 1) 51%, rgba(254, 254, 254, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1);
+}
+
+.lightsaber .switch {
+  background: #B94A37;
+  width: 5px;
+  height: 10px;
+  display: block;
+  position: absolute;
+  bottom: 10px;
+  left: 6px;
+  transition: left 200ms;
+  -moz-transition: left 200ms;
+  -webkit-transition: left 200ms;
+  -o-transition: left 200ms;
+  -ms-transition: left 200ms;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -o-border-radius: 10px;
+  -ms-border-radius: 10px;
+}
+
+.lightsaber input[type=checkbox] {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  -moz-opacity: 0;
+  -webkit-opacity: 0;
+  -o-opacity: 0;
+  -ms-opacity: 0;
+  z-index: 77;
+}
+
+.lightsaber .plasma {
+  transition: height 300ms, ;
+  -moz-transition: height 300ms;
+  -webkit-transition: height 300ms;
+  -o-transition: height 300ms;
+  -ms-transition: height 300ms;
+  border-radius: 12px 12px 0 0;
+  position: absolute;
+  bottom: 20px;
+  left: 1.5px;
+  width: 4px;
+  display: block;
+  filter: blur(1px);
+  -moz-filter: blur(1px);
+  -webkit-filter: blur(1px);
+  -o-filter: blur(1px);
+  -ms-filter: blur(1px);
+  height: 0;
+}
+
+.lightsaber input[type=checkbox]:checked~div.plasma {
+  height: 100px;
+}
+
+.lightsaber input[type=checkbox]:hover~div.switch {
+  background: #c09853;
+}
+
+.lightsaber input[type=checkbox]:checked~div.switch {
+  background: #468847;
+}
+
+.obi-wan {
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(55, 132, 214, 1)), color-stop(30%, rgba(254, 254, 254, 1)), color-stop(47%, rgba(254, 254, 254, 1)), color-stop(71%, rgba(254, 254, 254, 1)), color-stop(100%, rgba(55, 132, 214, 1)));
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3784d6', endColorstr='#3784d6', GradientType=1);
+  animation-name: obi-wan;
+  -moz-animation-name: obi-wan;
+  -webkit-animation-name: obi-wan;
+  -o-animation-name: obi-wan;
+  -ms-animation-name: obi-wan;
+  animation-duration: 2s;
+  -moz-animation-duration: 2s;
+  -webkit-animation-duration: 2s;
+  -o-animation-duration: 2s;
+  -ms-animation-duration: 2s;
+  animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+  -o-animation-iteration-count: infinite;
+  -ms-animation-iteration-count: infinite;
+}
+
+div {
+  -webkit-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+@keyframes obi-wan {
+  from {
+    box-shadow: 0 0 10px #3784d6;
+  }
+
+  50% {
+    box-shadow: 0 0 16px #3784d6;
+  }
+
+  to {
+    box-shadow: 0 0 10px #3784d6;
+  }
+}
+
+@-moz-keyframes obi-wan {
+  from {
+    box-shadow: 0 0 10px #3784d6;
+  }
+
+  50% {
+    box-shadow: 0 0 16px #3784d6;
+  }
+
+  to {
+    box-shadow: 0 0 10px #3784d6;
+  }
+}
+
+@-webkit-keyframes obi-wan {
+  from {
+    box-shadow: 0 0 10px #3784d6;
+  }
+
+  50% {
+    box-shadow: 0 0 16px #3784d6;
+  }
+
+  to {
+    box-shadow: 0 0 10px #3784d6;
+  }
+}
+
+@-o-keyframes obi-wan {
+  from {
+    box-shadow: 0 0 10px #3784d6;
+  }
+
+  50% {
+    box-shadow: 0 0 16px #3784d6;
+  }
+
+  to {
+    box-shadow: 0 0 10px #3784d6;
+  }
+}
+
+@-ms-keyframes obi-wan {
+  from {
+    box-shadow: 0 0 10px #3784d6;
+  }
+
+  50% {
+    box-shadow: 0 0 16px #3784d6;
+  }
+
+  to {
+    box-shadow: 0 0 10px #3784d6;
+  }
 }
 
 @media (max-width: 520px) {

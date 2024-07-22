@@ -1,6 +1,7 @@
 import React, { createContext, useState, useCallback, ReactNode } from 'react';
-import { fetchCharacterDetails, Character } from '../api/characters';
-import { DetailedCharacter } from '../components/CharacterDetails/CharacterDetails';
+import { Character, DetailedCharacter } from '../types/types';
+import { fetchCharacterDetails } from '../api/characters';
+
 
 interface DetailContextProps {
   selectedCharacter: DetailedCharacter | null;
