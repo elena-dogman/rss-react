@@ -5,8 +5,8 @@ import MainPage from '../MainPage';
 import TestSearchProvider from '../../../contexts/TestSearchProvider';
 import * as api from '../../../api/characters';
 import { BrowserRouter } from 'react-router-dom';
-import { DetailedCharacter } from '../../../components/CharacterDetails/CharacterDetails';
-import { Character } from '../../../api/characters';
+import { Character, DetailedCharacter } from '../../../types/types';
+
 
 vi.mock('../../../components/Results/Results', () => ({
   __esModule: true,

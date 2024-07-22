@@ -11,6 +11,7 @@ import { useFetchCharactersQuery, useFetchCharacterDetailsQuery } from '../../st
 import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
 import { DetailProvider } from '../../contexts/DetailContext';
 import { Character } from '../../types/types';
+import Flyout from '../../components/Flyout/Flyout';
 
 const MainPageContent: React.FC = () => {
   const location = useLocation();
@@ -99,6 +100,7 @@ const handleCharacterClick = (character: Character) => {
           )}
         </div>
       )}
+      <Flyout />
     </div>
   );
 };

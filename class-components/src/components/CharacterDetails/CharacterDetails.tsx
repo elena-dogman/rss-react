@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from './CharacterDetails.module.scss';
-import Loader from '../Loader/Loader';
 import CloseButton from '../CloseButton/CloseButton';
 import { DetailedCharacter } from '../../types/types';
 
@@ -11,10 +10,7 @@ interface CharacterDetailsProps {
   homeworld: string;
 }
 
-const CharacterDetails: React.FC<CharacterDetailsProps> = ({ character, isLoading, onClose, homeworld }) => {
-  if (isLoading) {
-    return <Loader />;
-  }
+const CharacterDetails: React.FC<CharacterDetailsProps> = ({ character, onClose, homeworld }) => {
 
   if (!character) {
     return null;
