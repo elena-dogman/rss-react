@@ -6,20 +6,10 @@ import Results from '../../components/Results/Results';
 import Loader from '../../components/Loader/Loader';
 import CharacterDetails from '../../components/CharacterDetails/CharacterDetails';
 import Pagination from '../../components/Pagination/Pagination';
-import { useFetchCharactersQuery, useFetchCharacterDetailsQuery, useFetchHomeworldQuery } from '../../store/reducers/apiSlice';
+import HomeworldFetcher from '../../components/HomeworldFetcher/HomeworldFetcher';
+import { useFetchCharactersQuery, useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
 import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
 import { DetailProvider } from '../../contexts/DetailContext';
-
-const HomeworldFetcher: React.FC<{ url: string, onFetch: (url: string, name: string) => void }> = ({ url, onFetch }) => {
-  const { data } = useFetchHomeworldQuery(url);
-  useEffect(() => {
-    if (data) {
-      onFetch(url, data.name);
-    }
-  }, [data, onFetch, url]);
-
-  return null;
-};
 
 const MainPageContent: React.FC = () => {
   const location = useLocation();
