@@ -5,6 +5,7 @@
   align-items: center;
   padding: 15px;
   max-width: 200px;
+  margin-left: 110px;
 }
 
 .search-input {
@@ -15,7 +16,7 @@
   border-radius: 20px;
   outline: none;
   box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
-  background-color: black;
+  background-color: var(--base-color);
   color: white;
 }
 
@@ -25,7 +26,6 @@
   padding: 8px 0px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: background-color 0.3s ease;
   font-family: $font-family-base;
   font-size: $font-size-base;

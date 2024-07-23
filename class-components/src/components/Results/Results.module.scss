@@ -21,13 +21,13 @@
   display: flex;
   flex-direction: column;
   border-radius: 8px;
-  box-shadow: 0 0 50px -10px #5750ea;
-  color: white;
+  box-shadow: var(--box-shadow);
+  color: var(--main-text-color);
   width: 180px;
   min-height: 200px;
   padding: 10px 20px;
   font-size: 16px;
-  background-color: black;
+  background-color: var(--base-color);
 }
 
 .character.selected {

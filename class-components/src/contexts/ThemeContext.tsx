@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, ReactNode, FC } from 'react';
+import React, { createContext, useEffect, useState, ReactNode } from 'react';
 
 interface ThemeContextProps {
   theme: string;
@@ -11,14 +11,20 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
-export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState<string>('dark');
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
-    if (theme === 'dark') {
-      document.body.classList.add('dark');
+    const themeFile = theme === 'dark' ? 'dark-theme.css' : 'light-theme.css';
+    const link = document.getElementById('theme-style') as HTMLLinkElement;
+    if (link) {
+      link.href = themeFile;
     } else {
-      document.body.classList.remove('dark');
+      const newLink = document.createElement('link');
+      newLink.id = 'theme-style';
+      newLink.rel = 'stylesheet';
+      newLink.href = themeFile;
+      document.head.appendChild(newLink);
     }
   }, [theme]);
 

@@ -8,6 +8,7 @@ import RootLayout from '../../layouts/root-layout';
 import CharacterDetails from '../CharacterDetails/CharacterDetails';
 import { setupStore } from '../../store/store';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from '../../contexts/ThemeContext';
 
 const store = setupStore();
 
@@ -15,7 +16,8 @@ const App: React.FC = () => {
   return (
     <div className={styles.app}>
       <Provider store={store}>
-      <SearchProvider>
+        <ThemeProvider>
+          <SearchProvider>
         <Router>
           <Routes>
             <Route path="/" element={<RootLayout />}>
@@ -26,8 +28,9 @@ const App: React.FC = () => {
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>
-        </Router>
-        </SearchProvider>
+            </Router>
+          </SearchProvider>
+          </ThemeProvider>
         </Provider>
     </div>
   );
