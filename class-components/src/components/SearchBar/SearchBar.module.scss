@@ -15,7 +15,7 @@
   border: 2px solid #00BFFF;
   border-radius: 20px;
   outline: none;
-  box-shadow: 0 0 10px rgba(0, 191, 255, 0.5);
+  box-shadow: var(--search-input-shadow);
   background-color: var(--base-color);
   color: white;
 }

@@ -7,8 +7,6 @@ $font-size-bigger-heading: 2.2rem;
 
 $accent-color: yellow;
 
-$button-hover-box-shadow-light: 0 0 5px rgb(205, 198, 198);
-
 @mixin hoverLink {
   &:hover {
     transform: scale(1.1);

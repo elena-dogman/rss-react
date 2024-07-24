@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState, ReactNode } from 'react';
+import '../../public/styles.css';
 
 interface ThemeContextProps {
   theme: string;
@@ -12,19 +13,19 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'dark';
+  });
 
   useEffect(() => {
-    const themeFile = theme === 'dark' ? 'dark-theme.css' : 'light-theme.css';
-    const link = document.getElementById('theme-style') as HTMLLinkElement;
-    if (link) {
-      link.href = themeFile;
+    localStorage.setItem('theme', theme);
+
+    if (theme === 'dark') {
+      document.body.classList.add('dark-theme');
+      document.body.classList.remove('light-theme');
     } else {
-      const newLink = document.createElement('link');
-      newLink.id = 'theme-style';
-      newLink.rel = 'stylesheet';
-      newLink.href = themeFile;
-      document.head.appendChild(newLink);
+      document.body.classList.add('light-theme');
+      document.body.classList.remove('dark-theme');
     }
   }, [theme]);
 

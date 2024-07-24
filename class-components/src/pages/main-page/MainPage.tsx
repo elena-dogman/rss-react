@@ -61,7 +61,6 @@ const handleCharacterClick = (character: Character) => {
       {isLoading ? (
         <div className={styles.loaderWrapper}>
           <Loader />
-          <span className={styles.loadingText}>Loading</span>
         </div>
       ) : characters.length === 0 ? (
         <div className={styles['no-results']}>

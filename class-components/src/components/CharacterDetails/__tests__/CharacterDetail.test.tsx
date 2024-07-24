@@ -1,7 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi } from 'vitest';
-import CharacterDetails, { DetailedCharacter } from '../CharacterDetails';
+import { DetailedCharacter } from '../../../types/types';
+import CharacterDetails from '../CharacterDetails';
+
 
 vi.mock('../../Loader/Loader', () => ({
   __esModule: true,

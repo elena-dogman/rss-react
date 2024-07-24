@@ -31,7 +31,7 @@
 }
 
 .character.selected {
-  background-color: rgb(13, 7, 36);
+  background-color: var(--selected-card-background);
 }
 
 .character p {
@@ -40,7 +40,7 @@
 
 .character-name {
   font-family: $font-family-heading;
-  color: yellow;
+  color: var(--character-name);
   font-size: $font-size-heading;
 }
 
