@@ -28,11 +28,11 @@ const Results: React.FC<ResultsProps> = ({ characters, homeworlds, onCharacterCl
       <div className={styles['characters-container']}>
         {characters.map((character) => (
           <div
-          key={character.url}
-          className={classNames(styles.character, {
-            [styles.selected]: selectedItems[character.url],
-          })}
-        >
+            key={character.url}
+            className={classNames(styles.character, {
+              [styles.selected]: selectedItems[character.url],
+            })}
+          >
             <div onClick={() => onCharacterClick(character)}>
               <h2 className={styles['character-name']}>{character.name}</h2>
               <p>
@@ -50,16 +50,16 @@ const Results: React.FC<ResultsProps> = ({ characters, homeworlds, onCharacterCl
               </p>
             </div>
             <div className={styles.lightsaber}>
-            <label htmlFor={`obi-wan-${character.url}`}></label>
-            <input
-              type="checkbox"
-              id={`obi-wan-${character.url}`}
-              checked={!!selectedItems[character.url]}
-              onChange={() => handleCheckboxChange(character)}
-            />
-            <div className={styles.switch}></div>
-            <div className={`${styles.plasma} ${styles['obi-wan']}`}></div>
-          </div>
+              <label htmlFor={`obi-wan-${character.url}`}></label>
+              <input
+                type="checkbox"
+                id={`obi-wan-${character.url}`}
+                checked={!!selectedItems[character.url]}
+                onChange={() => handleCheckboxChange(character)}
+              />
+              <div className={styles.switch}></div>
+              <div className={`${styles.plasma} ${styles['obi-wan']}`}></div>
+            </div>
           </div>
         ))}
       </div>
