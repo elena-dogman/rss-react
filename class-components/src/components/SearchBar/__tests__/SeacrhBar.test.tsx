@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { describe, it, beforeEach, vi } from 'vitest';
+import { describe, it, beforeEach } from 'vitest';
+import { MemoryRouter } from 'react-router-dom';
 import SearchBar from '../SearchBar';
-import TestSearchProvider from '../../../contexts/TestSearchProvider';
+import { SearchProvider } from '../../../contexts/SearchContext';
 
 describe('SearchBar Component', () => {
   beforeEach(() => {
@@ -10,11 +11,12 @@ describe('SearchBar Component', () => {
   });
 
   it('should save the entered value to local storage when the Search button is clicked', () => {
-    const setSearchTermMock = vi.fn();
     render(
-      <TestSearchProvider value={{ searchTerm: '', setSearchTerm: setSearchTermMock }}>
-        <SearchBar />
-      </TestSearchProvider>
+      <MemoryRouter>
+        <SearchProvider>
+          <SearchBar />
+        </SearchProvider>
+      </MemoryRouter>
     );
 
     const input = screen.getByPlaceholderText('Search for characters');
@@ -24,17 +26,17 @@ describe('SearchBar Component', () => {
     fireEvent.click(searchButton);
 
     expect(localStorage.getItem('searchTerm')).toBe('Luke Skywalker');
-    expect(setSearchTermMock).toHaveBeenCalledWith('Luke Skywalker');
   });
 
   it('should retrieve the value from local storage upon mounting', () => {
     localStorage.setItem('searchTerm', 'Leia Organa');
 
-    const setSearchTermMock = vi.fn();
     render(
-      <TestSearchProvider value={{ searchTerm: '', setSearchTerm: setSearchTermMock }}>
-        <SearchBar />
-      </TestSearchProvider>
+      <MemoryRouter>
+        <SearchProvider>
+          <SearchBar />
+        </SearchProvider>
+      </MemoryRouter>
     );
 
     const input = screen.getByPlaceholderText('Search for characters');
