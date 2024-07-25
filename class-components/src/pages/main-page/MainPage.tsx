@@ -1,46 +1,52 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import styles from './MainPage.module.scss';
 import Results from '../../components/Results/Results';
 import Loader from '../../components/Loader/Loader';
 import CharacterDetails from '../../components/CharacterDetails/CharacterDetails';
 import Pagination from '../../components/Pagination/Pagination';
 import HomeworldFetcher from '../../components/HomeworldFetcher/HomeworldFetcher';
-import { useFetchCharactersQuery, useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
+import { useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
 import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
+import { fetchCharacters, setCurrentPage, setHomeworlds } from '../../store/reducers/charactersSlice';
 import { DetailProvider } from '../../contexts/DetailContext';
 import { Character } from '../../types/types';
 import Flyout from '../../components/Flyout/Flyout';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { RootState } from '../../store/store';
 
 const MainPageContent: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const searchParams = new URLSearchParams(location.search);
   const term = searchParams.get('term') || '';
   const page = parseInt(searchParams.get('page') || '1', 10);
   const detailId = searchParams.get('details');
 
-  const { data: characterData, isLoading } = useFetchCharactersQuery({ term, page });
+  const { characters, homeworlds, isLoading, totalPages } = useAppSelector((state: RootState) => state.characters);
   const { data: selectedCharacter, isLoading: isDetailLoading } = useFetchCharacterDetailsQuery(detailId || '');
-  const [homeworlds, setHomeworlds] = useState<{ [url: string]: string }>({});
+  const [homeworldsState, setHomeworldsState] = useState<{ [url: string]: string }>({});
 
   const handleHomeworldFetch = useCallback((url: string, name: string) => {
-    setHomeworlds(prev => ({ ...prev, [url]: name }));
-  }, []);
+    if (!homeworlds[url]) {
+      setHomeworldsState(prev => ({ ...prev, [url]: name }));
+      dispatch(setHomeworlds({ ...homeworlds, [url]: name }));
+    }
+  }, [homeworlds, dispatch]);
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(location.search);
     params.set('page', newPage.toString());
     navigate(`?${params.toString()}`);
+    dispatch(setCurrentPage(newPage));
   };
 
-const handleCharacterClick = (character: Character) => {
-  const params = new URLSearchParams(location.search);
-  params.set('details', character.url);
-  navigate(`?${params.toString()}`);
-};
+  const handleCharacterClick = (character: Character) => {
+    const params = new URLSearchParams(location.search);
+    params.set('details', character.url);
+    navigate(`?${params.toString()}`);
+  };
 
   const handleCloseDetail = () => {
     const params = new URLSearchParams(location.search);
@@ -51,10 +57,9 @@ const handleCharacterClick = (character: Character) => {
   useEffect(() => {
     dispatch(setSearchTerm(term));
     dispatch(setPage(page));
+    dispatch(setCurrentPage(page));
+    dispatch(fetchCharacters({ term, page }));
   }, [term, page, dispatch]);
-
-  const characters = characterData?.characters || [];
-  const totalPages = characterData?.totalPages || 0;
 
   return (
     <div className={styles.mainPage}>
@@ -93,7 +98,7 @@ const handleCharacterClick = (character: Character) => {
                 character={selectedCharacter}
                 isLoading={isDetailLoading}
                 onClose={handleCloseDetail}
-                homeworld={homeworlds[selectedCharacter.homeworld] || 'Loading...'}
+                homeworld={homeworldsState[selectedCharacter.homeworld] || 'Loading...'}
               />
             </div>
           )}

@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Character } from "../../types/types";
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { Character } from '../../types/types';
 
 interface CharacterState {
   characters: Character[];
@@ -15,7 +15,21 @@ const initialState: CharacterState = {
   currentPage: 1,
   totalPages: 1,
   isLoading: false,
+};
+
+interface FetchCharactersArgs {
+  term: string;
+  page: number;
 }
+
+export const fetchCharacters = createAsyncThunk(
+  'characters/fetchCharacters',
+  async ({ term, page }: FetchCharactersArgs) => {
+    const response = await fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`);
+    const data = await response.json();
+    return { characters: data.results, totalPages: Math.ceil(data.count / 10) };
+  }
+);
 
 const characterSlice = createSlice({
   name: 'characters',
@@ -36,6 +50,20 @@ const characterSlice = createSlice({
     setIsLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCharacters.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchCharacters.fulfilled, (state, action) => {
+        state.characters = action.payload.characters;
+        state.totalPages = action.payload.totalPages;
+        state.isLoading = false;
+      })
+      .addCase(fetchCharacters.rejected, (state) => {
+        state.isLoading = false;
+      });
   }
 });
 

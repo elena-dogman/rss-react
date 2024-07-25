@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './CharacterDetails.module.scss';
 import CloseButton from '../CloseButton/CloseButton';
 import { DetailedCharacter } from '../../types/types';
+import { setSelectedCharacter } from '../../store/reducers/selectedCharacterSlice';
+
 
 interface CharacterDetailsProps {
   character: DetailedCharacter | null;
@@ -11,6 +14,13 @@ interface CharacterDetailsProps {
 }
 
 const CharacterDetails: React.FC<CharacterDetailsProps> = ({ character, onClose, homeworld }) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (character) {
+      dispatch(setSelectedCharacter(character));
+    }
+  }, [character, dispatch]);
 
   if (!character) {
     return null;
