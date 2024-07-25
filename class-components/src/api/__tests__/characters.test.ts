@@ -21,6 +21,7 @@ describe('API functions', () => {
 
     it('should fetch characters and return them with total pages', async () => {
       const term = 'luke';
+      const page = 1;
       const responseData = {
         count: 1,
         results: [
@@ -40,9 +41,9 @@ describe('API functions', () => {
         json: () => Promise.resolve(responseData),
       });
 
-      const result = await fetchCharacters(term);
+      const result = await fetchCharacters(term, page);
       expect(result).toEqual({ characters: responseData.results, totalPages: 1 });
-      expect(global.fetch).toHaveBeenCalledWith(`https://swapi.dev/api/people/?search=${term}`);
+      expect(global.fetch).toHaveBeenCalledWith(`https://swapi.dev/api/people/?search=${term}&page=${page}`);
     });
 
     it('should throw an error if the response is not ok', async () => {
@@ -51,8 +52,8 @@ describe('API functions', () => {
         status: 404,
       });
 
-      await expect(fetchCharacters('invalid')).rejects.toThrow('Error fetching characters: 404');
-      expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/people/?search=invalid');
+      await expect(fetchCharacters('invalid', 1)).rejects.toThrow('Error fetching characters: 404');
+      expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/people/?search=invalid&page=1');
     });
   });
 
