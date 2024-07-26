@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useFetchHomeworldQuery } from '../../store/reducers/apiSlice';
-import Loader from '../Loader/Loader';
+import { useLoading } from '../../contexts/useLoading';
 
 interface HomeworldFetcherProps {
   url: string;
@@ -9,6 +9,11 @@ interface HomeworldFetcherProps {
 
 const HomeworldFetcher: React.FC<HomeworldFetcherProps> = ({ url, onFetch }) => {
   const { data, isLoading } = useFetchHomeworldQuery(url);
+  const { setLoading } = useLoading();
+
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading, setLoading]);
 
   useEffect(() => {
     if (data) {
@@ -16,7 +21,7 @@ const HomeworldFetcher: React.FC<HomeworldFetcherProps> = ({ url, onFetch }) => 
     }
   }, [data, onFetch, url]);
 
-  return isLoading ? <Loader /> : null;
+  return null;
 };
 
 export default HomeworldFetcher;

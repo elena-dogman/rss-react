@@ -1,9 +1,9 @@
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { clearItems } from '../../store/reducers/selectedItemsSlice';
-import { saveAs } from 'file-saver';
 import styles from './Flyout.module.scss';
 import downloadIcon from '../../../public/assets/download.png';
+import { Character } from '../../types/types';
 
 const Flyout: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -14,15 +14,14 @@ const Flyout: React.FC = () => {
     dispatch(clearItems());
   };
 
-  const handleDownload = () => {
-    const itemsArray = Object.values(selectedItems);
-    const csvContent = `data:text/csv;charset=utf-8,${[
+  const convertToCSV = (items: Character[]): string => {
+    const csvContent = [
       ['Name', 'Gender', 'Height', 'Eye Color', 'Homeworld', 'URL'],
-      ...itemsArray.map(item => [item.name, item.gender, item.height, item.eye_color, item.homeworld, item.url])
-    ].map(e => e.join(',')).join('\n')}`;
+      ...items.map(item => [item.name, item.gender, item.height, item.eye_color, item.homeworld, item.url])
+    ].map(e => e.join(',')).join('\n');
 
-    const blob = new Blob([decodeURIComponent(encodeURI(csvContent))], { type: 'text/csv;charset=utf-8;' });
-    saveAs(blob, `${itemsCount}_items.csv`);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    return URL.createObjectURL(blob);
   };
 
   if (itemsCount === 0) {
@@ -33,9 +32,13 @@ const Flyout: React.FC = () => {
     <div className={styles.flyout}>
       <p className={styles['flyout-counter']}>{itemsCount} {itemsCount === 1 ? 'item' : 'items'} selected</p>
       <button className={styles['flyout-unselect-btn']} onClick={handleUnselectAll}>Unselect all</button>
-      <button className={styles['flyout-download-btn']} onClick={handleDownload}>
+      <a
+        className={styles['flyout-download-btn']}
+        href={convertToCSV(Object.values(selectedItems))}
+        download={`starwars_${itemsCount}.csv`}
+      >
         <img src={downloadIcon} alt="Download" className={styles['download-icon']} />
-      </button>
+      </a>
     </div>
   );
 };
