@@ -1,4 +1,4 @@
-body.dark-theme {
+.dark-theme {
   --background: black;
   --background-image: url('../../assets/background.jpg');
   --base-color: black;
@@ -15,7 +15,7 @@ body.dark-theme {
   --flyout-button-hover: 0 0 5px rgb(205, 198, 198);
 }
 
-body.light-theme {
+.light-theme {
   --background: #D5D5D5;
   --background-image: url('../../assets/background-light.jpg');
   --base-color: white;

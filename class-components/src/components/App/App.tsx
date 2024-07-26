@@ -8,7 +8,6 @@ import RootLayout from '../../layouts/root-layout';
 import CharacterDetails from '../CharacterDetails/CharacterDetails';
 import { setupStore } from '../../store/store';
 import { Provider } from 'react-redux';
-import { ThemeProvider } from '../../contexts/ThemeContext';
 
 const store = setupStore();
 
@@ -16,7 +15,6 @@ const App: React.FC = () => {
   return (
     <div className={styles.app}>
       <Provider store={store}>
-        <ThemeProvider>
           <SearchProvider>
         <Router>
           <Routes>
@@ -30,7 +28,6 @@ const App: React.FC = () => {
           </Routes>
             </Router>
           </SearchProvider>
-          </ThemeProvider>
         </Provider>
     </div>
   );
