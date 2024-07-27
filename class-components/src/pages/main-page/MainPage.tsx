@@ -68,7 +68,7 @@ const MainPageContent: React.FC = () => {
           <Loader />
         </div>
       ) : characters.length === 0 ? (
-        <div className={styles['no-results']}>
+        <div className={styles['no-results']} data-testid="no-results">
           <img
             src="/assets/yoda.png"
             className={styles['no-results-image']}

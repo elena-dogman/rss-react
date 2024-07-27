@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.59% </span>
+                <span class="strong">93.54% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>25/27</span>
+                <span class='fraction'>29/31</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/5</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.59% </span>
+                <span class="strong">93.54% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>25/27</span>
+                <span class='fraction'>29/31</span>
             </div>
         
             
@@ -109,15 +109,11 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a>
-<a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -128,24 +124,16 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,23 +155,13 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styles from './CharacterDetails.module.scss';
-import Loader from '../Loader/Loader';
 import CloseButton from '../CloseButton/CloseButton';
+import { DetailedCharacter } from '../../types/types';
+import { setSelectedCharacter } from '../../store/reducers/selectedCharacterSlice';
 &nbsp;
-&nbsp;
-export interface DetailedCharacter {
-  name: string;
-  birth_year: string;
-  gender: string;
-  height: string;
-  mass: string;
-  eye_color: string;
-  skin_color: string;
-  homeworld: string;
-  url: string;
-}
 &nbsp;
 interface CharacterDetailsProps {
   character: DetailedCharacter | null;
@@ -192,10 +170,14 @@ interface CharacterDetailsProps {
   homeworld: string;
 }
 &nbsp;
-const CharacterDetails: React.FC&lt;CharacterDetailsProps&gt; = ({ character, isLoading, onClose, homeworld }) =&gt; {
-  if (isLoading) {
-    return &lt;Loader /&gt;;
-  }
+const CharacterDetails: React.FC&lt;CharacterDetailsProps&gt; = ({ character, onClose, homeworld }) =&gt; {
+  const dispatch = useDispatch();
+&nbsp;
+  useEffect(() =&gt; {
+    if (character) {
+      dispatch(setSelectedCharacter(character));
+    }
+  }, [character, dispatch]);
 &nbsp;
   if (!character) <span class="branch-0 cbranch-no" title="branch not covered" >{</span>
 <span class="cstat-no" title="statement not covered" >    return null;</span>
@@ -204,13 +186,13 @@ const CharacterDetails: React.FC&lt;CharacterDetailsProps&gt; = ({ character, is
   return (
     &lt;div className={styles.details}&gt;
       &lt;div className={styles["details-content"]}&gt;
-      &lt;h2 className={styles["details-name"]}&gt;{character.name}&lt;/h2&gt;
-      &lt;p&gt;&lt;strong&gt;Birth Year:&lt;/strong&gt; {character.birth_year}&lt;/p&gt;
-      &lt;p&gt;&lt;strong&gt;Gender:&lt;/strong&gt; {character.gender}&lt;/p&gt;
-      &lt;p&gt;&lt;strong&gt;Height:&lt;/strong&gt; {character.height}&lt;/p&gt;
-      &lt;p&gt;&lt;strong&gt;Mass:&lt;/strong&gt; {character.mass}&lt;/p&gt;
-      &lt;p&gt;&lt;strong&gt;Eye Color:&lt;/strong&gt; {character.eye_color}&lt;/p&gt;
-      &lt;p&gt;&lt;strong&gt;Skin Color:&lt;/strong&gt; {character.skin_color}&lt;/p&gt;
+        &lt;h2 className={styles["details-name"]}&gt;{character.name}&lt;/h2&gt;
+        &lt;p&gt;&lt;strong&gt;Birth Year:&lt;/strong&gt; {character.birth_year}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Gender:&lt;/strong&gt; {character.gender}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Height:&lt;/strong&gt; {character.height}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Mass:&lt;/strong&gt; {character.mass}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Eye Color:&lt;/strong&gt; {character.eye_color}&lt;/p&gt;
+        &lt;p&gt;&lt;strong&gt;Skin Color:&lt;/strong&gt; {character.skin_color}&lt;/p&gt;
         &lt;p&gt;&lt;strong&gt;Homeworld:&lt;/strong&gt; {homeworld}&lt;/p&gt;
       &lt;/div&gt;
       &lt;CloseButton onClick={onClose} /&gt;
@@ -226,7 +208,7 @@ export default CharacterDetails;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-14T18:14:41.193Z
+                at 2024-07-27T08:12:01.051Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

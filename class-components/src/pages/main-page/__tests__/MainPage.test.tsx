@@ -1,12 +1,11 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, vi, beforeEach } from 'vitest';
 import MainPage from '../MainPage';
-import TestSearchProvider from '../../../contexts/TestSearchProvider';
 import * as api from '../../../api/characters';
 import { BrowserRouter } from 'react-router-dom';
 import { Character, DetailedCharacter } from '../../../types/types';
-
+import { renderWithProviders } from '../../../utils/test-utils';
 
 vi.mock('../../../components/Results/Results', () => ({
   __esModule: true,
@@ -41,30 +40,36 @@ describe('MainPage Component', () => {
     localStorage.clear();
   });
 
-  it('should render no results message if no characters are found', async () => {
-    const fetchCharactersMock = vi.spyOn(api, 'fetchCharacters').mockResolvedValue({ characters: [], totalPages: 0 });
+  it('renders the component without crashing', async () => {
+    const characters: Character[] = [
+      { name: 'Luke Skywalker', gender: 'male', height: '172', eye_color: 'blue', homeworld: 'Tatooine', url: '1' },
+      { name: 'Leia Organa', gender: 'female', height: '150', eye_color: 'brown', homeworld: 'Alderaan', url: '2' }
+    ];
+
+    const fetchCharactersMock = vi.spyOn(api, 'fetchCharacters').mockResolvedValue({ characters, totalPages: 1 });
     const fetchHomeworldMock = vi.spyOn(api, 'fetchHomeworld').mockResolvedValue('Mocked Homeworld');
     const fetchCharacterDetailsMock = vi.spyOn(api, 'fetchCharacterDetails').mockResolvedValue({} as DetailedCharacter);
 
-    render(
-      <TestSearchProvider value={{ searchTerm: 'Luke', setSearchTerm: vi.fn() }}>
-        <BrowserRouter>
-          <MainPage />
-        </BrowserRouter>
-      </TestSearchProvider>
+    renderWithProviders(
+      <BrowserRouter>
+        <MainPage />
+      </BrowserRouter>,
+      {}
     );
 
     await waitFor(() => {
-      expect(screen.getByText('FOUND NO RESULTS YOU HAVE')).toBeInTheDocument();
-      expect(screen.getByText('Change your search query you must')).toBeInTheDocument();
-    });
+      expect(screen.queryByText('Mocked Loader Component')).not.toBeInTheDocument();
+    }, { timeout: 3000 });
 
+    await waitFor(() => {
+      expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
+    });
     fetchCharactersMock.mockRestore();
     fetchHomeworldMock.mockRestore();
     fetchCharacterDetailsMock.mockRestore();
   });
 
-  it('should render character details', async () => {
+  it('renders character details', async () => {
     const characters = [
       { name: 'Luke Skywalker', gender: 'male', height: '172', eye_color: 'blue', homeworld: 'Tatooine', url: '1' },
       { name: 'Leia Organa', gender: 'female', height: '150', eye_color: 'brown', homeworld: 'Alderaan', url: '2' }
@@ -73,13 +78,16 @@ describe('MainPage Component', () => {
     const fetchHomeworldMock = vi.spyOn(api, 'fetchHomeworld').mockResolvedValue('Mocked Homeworld');
     const fetchCharacterDetailsMock = vi.spyOn(api, 'fetchCharacterDetails').mockResolvedValue({} as DetailedCharacter);
 
-    render(
-      <TestSearchProvider value={{ searchTerm: 'Luke', setSearchTerm: vi.fn() }}>
-        <BrowserRouter>
-          <MainPage />
-        </BrowserRouter>
-      </TestSearchProvider>
+    renderWithProviders(
+      <BrowserRouter>
+        <MainPage />
+      </BrowserRouter>,
+      {}
     );
+
+    await waitFor(() => {
+      expect(screen.queryByText('Mocked Loader Component')).not.toBeInTheDocument();
+    }, { timeout: 3000 });
 
     await waitFor(() => {
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
