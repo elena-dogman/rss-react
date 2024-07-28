@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState, ReactNode } from 'react';
-import '../../public/styles.css';
+import '../styles.css';
 
 interface ThemeContextProps {
   theme: string;
