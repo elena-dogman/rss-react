@@ -1,4 +1,4 @@
 [build]
 base = "class-components"
 command = "npm run build"
-publish = "/dist"
+publish = "dist"
