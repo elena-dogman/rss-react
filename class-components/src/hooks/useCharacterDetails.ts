@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Character, DetailedCharacter } from '../types/types';
 
 const useCharacterDetails = (currentPage: number) => {
-  const [selectedCharacter, setSelectedCharacter] = useState<DetailedCharacter | null>(null);
+  const [selectedCharacter, setSelectedCharacter] =
+    useState<DetailedCharacter | null>(null);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -20,10 +21,13 @@ const useCharacterDetails = (currentPage: number) => {
     }
   }, []);
 
-  const handleCharacterClick = useCallback((character: Character) => {
-    navigate(`/?frontpage=${currentPage}&details=${character.url}`);
-    fetchCharacterDetailsById(character.url);
-  }, [currentPage, fetchCharacterDetailsById, navigate]);
+  const handleCharacterClick = useCallback(
+    (character: Character) => {
+      navigate(`/?frontpage=${currentPage}&details=${character.url}`);
+      fetchCharacterDetailsById(character.url);
+    },
+    [currentPage, fetchCharacterDetailsById, navigate],
+  );
 
   const handleCloseDetail = useCallback(() => {
     navigate(`/?frontpage=${currentPage}`);

@@ -14,51 +14,63 @@ const useCharacters = () => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const fetchHomeworlds = useCallback(async (characters: Character[]) => {
-    const homeworldsPromises = characters.map(async (character) => {
-      if (!homeworlds[character.homeworld]) {
-        const name = await fetchHomeworld(character.homeworld);
-        return { url: character.homeworld, name };
+  const fetchHomeworlds = useCallback(
+    async (characters: Character[]) => {
+      const homeworldsPromises = characters.map(async (character) => {
+        if (!homeworlds[character.homeworld]) {
+          const name = await fetchHomeworld(character.homeworld);
+          return { url: character.homeworld, name };
+        }
+        return null;
+      });
+
+      const homeworldsData = await Promise.all(homeworldsPromises);
+      const newHomeworlds: { [url: string]: string } = {};
+
+      homeworldsData.forEach((homeworld) => {
+        if (homeworld) {
+          newHomeworlds[homeworld.url] = homeworld.name;
+        }
+      });
+
+      setHomeworlds((prevHomeworlds) => ({
+        ...prevHomeworlds,
+        ...newHomeworlds,
+      }));
+    },
+    [homeworlds],
+  );
+
+  const fetchCharactersData = useCallback(
+    async (page: number) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const { characters, totalPages } = await fetchCharacters(
+          searchTerm,
+          page,
+        );
+        setCharacters(characters);
+        setCurrentPage(page);
+        setTotalPages(totalPages);
+        await fetchHomeworlds(characters);
+      } catch (error) {
+        console.error('Error fetching characters:', error);
+        setError('Failed to fetch characters. Please try again later.');
+      } finally {
+        setIsLoading(false);
       }
-      return null;
-    });
+    },
+    [fetchHomeworlds, searchTerm],
+  );
 
-    const homeworldsData = await Promise.all(homeworldsPromises);
-    const newHomeworlds: { [url: string]: string } = {};
-
-    homeworldsData.forEach((homeworld) => {
-      if (homeworld) {
-        newHomeworlds[homeworld.url] = homeworld.name;
-      }
-    });
-
-    setHomeworlds((prevHomeworlds) => ({
-      ...prevHomeworlds,
-      ...newHomeworlds,
-    }));
-  }, [homeworlds]);
-
-  const fetchCharactersData = useCallback(async (page: number) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const { characters, totalPages } = await fetchCharacters(searchTerm, page);
-      setCharacters(characters);
+  const handlePageChange = useCallback(
+    (page: number) => {
       setCurrentPage(page);
-      setTotalPages(totalPages);
-      await fetchHomeworlds(characters);
-    } catch (error) {
-      console.error('Error fetching characters:', error);
-      setError('Failed to fetch characters. Please try again later.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [fetchHomeworlds, searchTerm]);
-
-  const handlePageChange = useCallback((page: number) => {
-    setCurrentPage(page);
-    navigate(`/?page=${page}`);
-  }, [navigate]);
+      navigate(`/?page=${page}`);
+    },
+    [navigate],
+  );
 
   useEffect(() => {
     fetchCharactersData(currentPage);

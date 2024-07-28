@@ -7,7 +7,10 @@ interface HomeworldFetcherProps {
   onFetch: (url: string, name: string) => void;
 }
 
-const HomeworldFetcher: React.FC<HomeworldFetcherProps> = ({ url, onFetch }) => {
+const HomeworldFetcher: React.FC<HomeworldFetcherProps> = ({
+  url,
+  onFetch,
+}) => {
   const { data, isLoading } = useFetchHomeworldQuery(url);
   const { setLoading } = useLoading();
 

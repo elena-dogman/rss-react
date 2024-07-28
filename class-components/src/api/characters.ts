@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { DetailedCharacter } from '../types/types';
 
-
 export const fetchCharacters = async (term: string, page: number = 1) => {
   const url = `https://swapi.dev/api/people/?search=${term}&page=${page}`;
   console.log('Fetching URL:', url);
@@ -19,8 +18,9 @@ export const fetchHomeworld = async (url: string) => {
   return response.data.name;
 };
 
-export const fetchCharacterDetails = async (url: string): Promise<DetailedCharacter> => {
+export const fetchCharacterDetails = async (
+  url: string,
+): Promise<DetailedCharacter> => {
   const response = await axios.get(url);
   return response.data;
 };
-

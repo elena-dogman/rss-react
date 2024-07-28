@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.54% </span>
+                <span class="strong">95.91% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>29/31</span>
+                <span class='fraction'>47/49</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.54% </span>
+                <span class="strong">95.91% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>29/31</span>
+                <span class='fraction'>47/49</span>
             </div>
         
             
@@ -109,7 +109,24 @@
 <a name='L44'></a><a href='#L44'>44</a>
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
-<a name='L47'></a><a href='#L47'>47</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -123,8 +140,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -137,6 +157,20 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -162,7 +196,6 @@ import CloseButton from '../CloseButton/CloseButton';
 import { DetailedCharacter } from '../../types/types';
 import { setSelectedCharacter } from '../../store/reducers/selectedCharacterSlice';
 &nbsp;
-&nbsp;
 interface CharacterDetailsProps {
   character: DetailedCharacter | null;
   isLoading: boolean;
@@ -170,7 +203,11 @@ interface CharacterDetailsProps {
   homeworld: string;
 }
 &nbsp;
-const CharacterDetails: React.FC&lt;CharacterDetailsProps&gt; = ({ character, onClose, homeworld }) =&gt; {
+const CharacterDetails: React.FC&lt;CharacterDetailsProps&gt; = ({
+  character,
+  onClose,
+  homeworld,
+}) =&gt; {
   const dispatch = useDispatch();
 &nbsp;
   useEffect(() =&gt; {
@@ -185,15 +222,29 @@ const CharacterDetails: React.FC&lt;CharacterDetailsProps&gt; = ({ character, on
 &nbsp;
   return (
     &lt;div className={styles.details}&gt;
-      &lt;div className={styles["details-content"]}&gt;
-        &lt;h2 className={styles["details-name"]}&gt;{character.name}&lt;/h2&gt;
-        &lt;p&gt;&lt;strong&gt;Birth Year:&lt;/strong&gt; {character.birth_year}&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Gender:&lt;/strong&gt; {character.gender}&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Height:&lt;/strong&gt; {character.height}&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Mass:&lt;/strong&gt; {character.mass}&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Eye Color:&lt;/strong&gt; {character.eye_color}&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Skin Color:&lt;/strong&gt; {character.skin_color}&lt;/p&gt;
-        &lt;p&gt;&lt;strong&gt;Homeworld:&lt;/strong&gt; {homeworld}&lt;/p&gt;
+      &lt;div className={styles['details-content']}&gt;
+        &lt;h2 className={styles['details-name']}&gt;{character.name}&lt;/h2&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Birth Year:&lt;/strong&gt; {character.birth_year}
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Gender:&lt;/strong&gt; {character.gender}
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Height:&lt;/strong&gt; {character.height}
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Mass:&lt;/strong&gt; {character.mass}
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Eye Color:&lt;/strong&gt; {character.eye_color}
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Skin Color:&lt;/strong&gt; {character.skin_color}
+        &lt;/p&gt;
+        &lt;p&gt;
+          &lt;strong&gt;Homeworld:&lt;/strong&gt; {homeworld}
+        &lt;/p&gt;
       &lt;/div&gt;
       &lt;CloseButton onClick={onClose} /&gt;
     &lt;/div&gt;
@@ -208,7 +259,7 @@ export default CharacterDetails;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-27T11:19:06.270Z
+                at 2024-07-28T06:23:11.958Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -24,9 +24,19 @@ const App: React.FC = () => {
                 <Routes>
                   <Route path="/" element={<RootLayout />}>
                     <Route index element={<MainPage />} />
-                    <Route path="details/:id" element={<CharacterDetails character={null} isLoading={false} onClose={function (): void {
-                      throw new Error('Function not implemented.');
-                    }} homeworld={''} />} />
+                    <Route
+                      path="details/:id"
+                      element={
+                        <CharacterDetails
+                          character={null}
+                          isLoading={false}
+                          onClose={function (): void {
+                            throw new Error('Function not implemented.');
+                          }}
+                          homeworld={''}
+                        />
+                      }
+                    />
                     <Route path="*" element={<NotFoundPage />} />
                   </Route>
                 </Routes>

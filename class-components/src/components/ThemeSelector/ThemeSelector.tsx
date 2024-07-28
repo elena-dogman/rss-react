@@ -15,7 +15,7 @@ const ThemeSelector: React.FC = () => {
     setTheme(theme === 'dark' ? 'light' : 'dark');
   };
 
-return (
+  return (
     <div className={styles.theme_f}>
       <label className={styles.f}>
         <span className={styles.rebels}>Rebels</span>

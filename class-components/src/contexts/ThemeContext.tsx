@@ -6,7 +6,9 @@ interface ThemeContextProps {
   setTheme: (theme: string) => void;
 }
 
-export const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
+export const ThemeContext = createContext<ThemeContextProps | undefined>(
+  undefined,
+);
 
 interface ThemeProviderProps {
   children: ReactNode;

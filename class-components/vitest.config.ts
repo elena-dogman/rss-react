@@ -1,9 +1,11 @@
+/// <reference types="vitest" />
+
 import { defineConfig, coverageConfigDefaults } from 'vitest/config';
 import { resolve } from 'node:path';
 
 export default defineConfig({
   resolve: {
-    alias: [{find: '@', replacement: resolve(__dirname, './src')}],
+    alias: [{ find: '@', replacement: resolve(__dirname, './src') }],
   },
   test: {
     environment: 'jsdom',

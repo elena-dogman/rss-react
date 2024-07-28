@@ -2,13 +2,16 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './MainPage.module.scss';
 import Results from '../../components/Results/Results';
-import Loader from '../../components/Loader/Loader';
 import CharacterDetails from '../../components/CharacterDetails/CharacterDetails';
 import Pagination from '../../components/Pagination/Pagination';
 import HomeworldFetcher from '../../components/HomeworldFetcher/HomeworldFetcher';
 import { useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
 import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
-import { fetchCharacters, setCurrentPage, setHomeworlds } from '../../store/reducers/charactersSlice';
+import {
+  fetchCharacters,
+  setCurrentPage,
+  setHomeworlds,
+} from '../../store/reducers/charactersSlice';
 import { DetailProvider } from '../../contexts/DetailContext';
 import { Character } from '../../types/types';
 import Flyout from '../../components/Flyout/Flyout';
@@ -24,16 +27,24 @@ const MainPageContent: React.FC = () => {
   const page = parseInt(searchParams.get('page') || '1', 10);
   const detailId = searchParams.get('details');
 
-  const { characters, homeworlds, isLoading, totalPages } = useAppSelector((state: RootState) => state.characters);
-  const { data: selectedCharacter, isLoading: isDetailLoading } = useFetchCharacterDetailsQuery(detailId || '');
-  const [homeworldsState, setHomeworldsState] = useState<{ [url: string]: string }>({});
+  const { characters, homeworlds, isLoading, totalPages } = useAppSelector(
+    (state: RootState) => state.characters,
+  );
+  const { data: selectedCharacter, isLoading: isDetailLoading } =
+    useFetchCharacterDetailsQuery(detailId || '');
+  const [homeworldsState, setHomeworldsState] = useState<{
+    [url: string]: string;
+  }>({});
 
-  const handleHomeworldFetch = useCallback((url: string, name: string) => {
-    if (!homeworlds[url]) {
-      setHomeworldsState(prev => ({ ...prev, [url]: name }));
-      dispatch(setHomeworlds({ ...homeworlds, [url]: name }));
-    }
-  }, [homeworlds, dispatch]);
+  const handleHomeworldFetch = useCallback(
+    (url: string, name: string) => {
+      if (!homeworlds[url]) {
+        setHomeworldsState((prev) => ({ ...prev, [url]: name }));
+        dispatch(setHomeworlds({ ...homeworlds, [url]: name }));
+      }
+    },
+    [homeworlds, dispatch],
+  );
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(location.search);
@@ -63,11 +74,7 @@ const MainPageContent: React.FC = () => {
 
   return (
     <div className={styles.mainPage}>
-      {isLoading ? (
-        <div className={styles.loaderWrapper}>
-          <Loader />
-        </div>
-      ) : characters.length === 0 ? (
+      {characters.length === 0 && !isLoading ? (
         <div className={styles['no-results']} data-testid="no-results">
           <img
             src="/assets/yoda.png"
@@ -86,11 +93,23 @@ const MainPageContent: React.FC = () => {
       ) : (
         <div className={styles.content}>
           <div className={styles.results}>
-            <Results characters={characters} homeworlds={homeworlds} onCharacterClick={handleCharacterClick} />
-            {characters.map(character => (
-              <HomeworldFetcher key={character.url} url={character.homeworld} onFetch={handleHomeworldFetch} />
+            <Results
+              characters={characters}
+              homeworlds={homeworlds}
+              onCharacterClick={handleCharacterClick}
+            />
+            {characters.map((character) => (
+              <HomeworldFetcher
+                key={character.url}
+                url={character.homeworld}
+                onFetch={handleHomeworldFetch}
+              />
             ))}
-            <Pagination currentPage={page} totalPages={totalPages} onPageChange={handlePageChange} />
+            <Pagination
+              currentPage={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
           {detailId && selectedCharacter && (
             <div className={styles.details}>
@@ -98,7 +117,9 @@ const MainPageContent: React.FC = () => {
                 character={selectedCharacter}
                 isLoading={isDetailLoading}
                 onClose={handleCloseDetail}
-                homeworld={homeworldsState[selectedCharacter.homeworld] || 'Loading...'}
+                homeworld={
+                  homeworldsState[selectedCharacter.homeworld] || 'Loading...'
+                }
               />
             </div>
           )}

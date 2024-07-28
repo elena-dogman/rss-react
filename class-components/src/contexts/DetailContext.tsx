@@ -2,7 +2,6 @@ import React, { createContext, useState, useCallback, ReactNode } from 'react';
 import { Character, DetailedCharacter } from '../types/types';
 import { fetchCharacterDetails } from '../api/characters';
 
-
 interface DetailContextProps {
   selectedCharacter: DetailedCharacter | null;
   isDetailLoading: boolean;
@@ -15,10 +14,13 @@ interface DetailProviderProps {
   children: ReactNode;
 }
 
-export const DetailContext = createContext<DetailContextProps | undefined>(undefined);
+export const DetailContext = createContext<DetailContextProps | undefined>(
+  undefined,
+);
 
 export const DetailProvider: React.FC<DetailProviderProps> = ({ children }) => {
-  const [selectedCharacter, setSelectedCharacter] = useState<DetailedCharacter | null>(null);
+  const [selectedCharacter, setSelectedCharacter] =
+    useState<DetailedCharacter | null>(null);
   const [isDetailLoading, setIsDetailLoading] = useState(false);
 
   const fetchCharacterDetailsById = useCallback(async (id: string) => {
@@ -33,15 +35,26 @@ export const DetailProvider: React.FC<DetailProviderProps> = ({ children }) => {
     }
   }, []);
 
-  const handleCharacterClick = useCallback((character: Character) => {
-    fetchCharacterDetailsById(character.url);
-  }, [fetchCharacterDetailsById]);
+  const handleCharacterClick = useCallback(
+    (character: Character) => {
+      fetchCharacterDetailsById(character.url);
+    },
+    [fetchCharacterDetailsById],
+  );
 
   const handleCloseDetail = useCallback(() => {
     setSelectedCharacter(null);
   }, []);
   return (
-    <DetailContext.Provider value={{ selectedCharacter, isDetailLoading, fetchCharacterDetailsById, handleCharacterClick, handleCloseDetail }}>
+    <DetailContext.Provider
+      value={{
+        selectedCharacter,
+        isDetailLoading,
+        fetchCharacterDetailsById,
+        handleCharacterClick,
+        handleCloseDetail,
+      }}
+    >
       {children}
     </DetailContext.Provider>
   );

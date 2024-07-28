@@ -21,11 +21,13 @@ describe('Wrapper Component', () => {
             <div>Child Content</div>
           </Wrapper>
         </LoadingProvider>
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     expect(screen.getByText('Child Content')).toBeInTheDocument();
-    expect(screen.getByText('Child Content').parentElement).toHaveClass('light-theme');
+    expect(screen.getByText('Child Content').parentElement).toHaveClass(
+      'light-theme',
+    );
   });
 
   it('renders children with dark theme', () => {
@@ -38,11 +40,13 @@ describe('Wrapper Component', () => {
             <div>Child Content</div>
           </Wrapper>
         </LoadingProvider>
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     expect(screen.getByText('Child Content')).toBeInTheDocument();
-    expect(screen.getByText('Child Content').parentElement).toHaveClass('dark-theme');
+    expect(screen.getByText('Child Content').parentElement).toHaveClass(
+      'dark-theme',
+    );
   });
 
   it('renders null if theme context is not provided', () => {
@@ -51,7 +55,7 @@ describe('Wrapper Component', () => {
         <Wrapper>
           <div>Child Content</div>
         </Wrapper>
-      </LoadingProvider>
+      </LoadingProvider>,
     );
 
     expect(container.firstChild).toBeNull();

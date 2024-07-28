@@ -6,7 +6,10 @@ interface TestSearchProviderProps {
   children: ReactNode;
 }
 
-const TestSearchProvider: FC<TestSearchProviderProps> = ({ value, children }) => {
+const TestSearchProvider: FC<TestSearchProviderProps> = ({
+  value,
+  children,
+}) => {
   const [searchTerm, setSearchTerm] = useState(value.searchTerm || '');
 
   const contextValue: SearchContextProps = {
@@ -14,7 +17,11 @@ const TestSearchProvider: FC<TestSearchProviderProps> = ({ value, children }) =>
     setSearchTerm: value.setSearchTerm || setSearchTerm,
   };
 
-  return <SearchContext.Provider value={contextValue}>{children}</SearchContext.Provider>;
+  return (
+    <SearchContext.Provider value={contextValue}>
+      {children}
+    </SearchContext.Provider>
+  );
 };
 
 export default TestSearchProvider;

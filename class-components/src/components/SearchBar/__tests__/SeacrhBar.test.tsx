@@ -16,7 +16,7 @@ describe('SearchBar Component', () => {
         <SearchProvider>
           <SearchBar />
         </SearchProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const input = screen.getByPlaceholderText('Search for characters');
@@ -36,7 +36,7 @@ describe('SearchBar Component', () => {
         <SearchProvider>
           <SearchBar />
         </SearchProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const input = screen.getByPlaceholderText('Search for characters');

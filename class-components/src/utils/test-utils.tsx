@@ -12,17 +12,12 @@ interface RenderWithProvidersOptions {
 
 export function renderWithProviders(
   ui: React.ReactElement,
-  {
-    store = setupStore(),
-    ...renderOptions
-  }: RenderWithProvidersOptions = {}
+  { store = setupStore(), ...renderOptions }: RenderWithProvidersOptions = {},
 ) {
   function Wrapper({ children }: { children: ReactNode }): JSX.Element {
     return (
       <Provider store={store}>
-        <LoadingProvider>
-          {children}
-        </LoadingProvider>
+        <LoadingProvider>{children}</LoadingProvider>
       </Provider>
     );
   }

@@ -26,20 +26,68 @@ const character: DetailedCharacter = {
 
 describe('CharacterDetails Component', () => {
   it('should correctly display the detailed card data', () => {
-    renderWithProviders(<CharacterDetails character={character} isLoading={false} onClose={vi.fn()} homeworld="Tatooine" />);
+    renderWithProviders(
+      <CharacterDetails
+        character={character}
+        isLoading={false}
+        onClose={vi.fn()}
+        homeworld="Tatooine"
+      />,
+    );
     expect(screen.getByText(character.name)).toBeInTheDocument();
-    expect(screen.getByText((content, element) => element?.textContent === `Birth Year: ${character.birth_year}`)).toBeInTheDocument();
-    expect(screen.getByText((content, element) => element?.textContent === `Gender: ${character.gender}`)).toBeInTheDocument();
-    expect(screen.getByText((content, element) => element?.textContent === `Height: ${character.height}`)).toBeInTheDocument();
-    expect(screen.getByText((content, element) => element?.textContent === `Mass: ${character.mass}`)).toBeInTheDocument();
-    expect(screen.getByText((content, element) => element?.textContent === `Eye Color: ${character.eye_color}`)).toBeInTheDocument();
-    expect(screen.getByText((content, element) => element?.textContent === `Skin Color: ${character.skin_color}`)).toBeInTheDocument();
-    expect(screen.getByText((content, element) => element?.textContent === `Homeworld: Tatooine`)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (content, element) =>
+          element?.textContent === `Birth Year: ${character.birth_year}`,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (content, element) =>
+          element?.textContent === `Gender: ${character.gender}`,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (content, element) =>
+          element?.textContent === `Height: ${character.height}`,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (content, element) =>
+          element?.textContent === `Mass: ${character.mass}`,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (content, element) =>
+          element?.textContent === `Eye Color: ${character.eye_color}`,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (content, element) =>
+          element?.textContent === `Skin Color: ${character.skin_color}`,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        (content, element) => element?.textContent === `Homeworld: Tatooine`,
+      ),
+    ).toBeInTheDocument();
   });
 
   it('should hide the component when clicking the close button', () => {
     const onCloseMock = vi.fn();
-    renderWithProviders(<CharacterDetails character={character} isLoading={false} onClose={onCloseMock} homeworld="Tatooine" />);
+    renderWithProviders(
+      <CharacterDetails
+        character={character}
+        isLoading={false}
+        onClose={onCloseMock}
+        homeworld="Tatooine"
+      />,
+    );
     const closeButton = screen.getByText('Mocked Close Button');
     fireEvent.click(closeButton);
     expect(onCloseMock).toHaveBeenCalled();

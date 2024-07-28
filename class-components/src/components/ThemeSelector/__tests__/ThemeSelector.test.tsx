@@ -14,7 +14,7 @@ describe('ThemeSelector Component', () => {
     render(
       <ThemeContext.Provider value={contextValue}>
         <ThemeSelector />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -35,7 +35,7 @@ describe('ThemeSelector Component', () => {
     render(
       <ThemeContext.Provider value={contextValue}>
         <ThemeSelector />
-      </ThemeContext.Provider>
+      </ThemeContext.Provider>,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -49,6 +49,8 @@ describe('ThemeSelector Component', () => {
   it('throws an error if used outside of ThemeProvider', () => {
     const renderComponent = () => render(<ThemeSelector />);
 
-    expect(renderComponent).toThrow('ThemeContext must be used within a ThemeProvider');
+    expect(renderComponent).toThrow(
+      'ThemeContext must be used within a ThemeProvider',
+    );
   });
 });

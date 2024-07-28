@@ -11,9 +11,15 @@ interface ResultsProps {
   onCharacterClick: (character: Character) => void;
 }
 
-const Results: React.FC<ResultsProps> = ({ characters, homeworlds, onCharacterClick }) => {
+const Results: React.FC<ResultsProps> = ({
+  characters,
+  homeworlds,
+  onCharacterClick,
+}) => {
   const dispatch = useAppDispatch();
-  const selectedItems = useAppSelector((state) => state.selectedItems.selectedItems);
+  const selectedItems = useAppSelector(
+    (state) => state.selectedItems.selectedItems,
+  );
 
   const handleCheckboxChange = (character: Character) => {
     if (selectedItems[character.url]) {

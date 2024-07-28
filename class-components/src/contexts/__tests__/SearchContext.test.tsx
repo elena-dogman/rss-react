@@ -24,7 +24,7 @@ describe('SearchProvider', () => {
     render(
       <SearchProvider>
         <TestComponent />
-      </SearchProvider>
+      </SearchProvider>,
     );
 
     const searchTermElement = screen.getByTestId('search-term');
@@ -35,7 +35,7 @@ describe('SearchProvider', () => {
     render(
       <SearchProvider>
         <TestComponent />
-      </SearchProvider>
+      </SearchProvider>,
     );
 
     const searchTermElement = screen.getByTestId('search-term');

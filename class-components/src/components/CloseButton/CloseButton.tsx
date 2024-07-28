@@ -7,7 +7,12 @@ interface CloseButtonProps {
 
 const CloseButton: React.FC<CloseButtonProps> = ({ onClick }) => {
   return (
-    <div className={styles.close} onClick={onClick} role="button" aria-label="Close">
+    <div
+      className={styles.close}
+      onClick={onClick}
+      role="button"
+      aria-label="Close"
+    >
       <span></span>
       <span></span>
       <span></span>

@@ -13,7 +13,7 @@ const loadState = () => {
     }
     return JSON.parse(serializedState);
   } catch (err) {
-    console.error("Could not load state", err);
+    console.error('Could not load state', err);
     return undefined;
   }
 };
@@ -23,7 +23,7 @@ const saveState = (state: SelectedItemsState) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('selectedItems', serializedState);
   } catch (err) {
-    console.error("Could not save state", err);
+    console.error('Could not save state', err);
   }
 };
 
@@ -46,7 +46,7 @@ const selectedItemsSlice = createSlice({
     clearItems: (state) => {
       state.selectedItems = {};
       saveState(state);
-    }
+    },
   },
 });
 

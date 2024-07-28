@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { DetailedCharacter } from "../../types/types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { DetailedCharacter } from '../../types/types';
 
 interface SelectedCharacterState {
   character: DetailedCharacter | null;
@@ -9,20 +9,24 @@ interface SelectedCharacterState {
 const initialState: SelectedCharacterState = {
   character: null,
   isLoading: false,
-}
+};
 
 const selectedCharacterSlice = createSlice({
   name: 'selectedCharacter',
   initialState,
   reducers: {
-    setSelectedCharacter(state, action: PayloadAction<DetailedCharacter | null>) {
+    setSelectedCharacter(
+      state,
+      action: PayloadAction<DetailedCharacter | null>,
+    ) {
       state.character = action.payload;
     },
     setIsLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
-    }
-  }
+    },
+  },
 });
 
-export const { setSelectedCharacter, setIsLoading } = selectedCharacterSlice.actions;
+export const { setSelectedCharacter, setIsLoading } =
+  selectedCharacterSlice.actions;
 export default selectedCharacterSlice.reducer;

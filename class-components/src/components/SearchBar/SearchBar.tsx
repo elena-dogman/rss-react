@@ -4,7 +4,9 @@ import styles from './SearchBar.module.scss';
 import { useSearch } from '../../contexts/useSearch';
 
 const useSearchTerm = () => {
-  const [searchTerm, setSearchTerm] = useState(localStorage.getItem('searchTerm') || '');
+  const [searchTerm, setSearchTerm] = useState(
+    localStorage.getItem('searchTerm') || '',
+  );
 
   useEffect(() => {
     localStorage.setItem('searchTerm', searchTerm);

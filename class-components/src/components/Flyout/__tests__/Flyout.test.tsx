@@ -16,8 +16,22 @@ interface PartialRootState {
 const mockStore = configureMockStore<PartialRootState>();
 
 const selectedItems: { [key: string]: Character } = {
-  '1': { name: 'Luke Skywalker', gender: 'male', height: '172', eye_color: 'blue', homeworld: 'Tatooine', url: '1' },
-  '2': { name: 'Leia Organa', gender: 'female', height: '150', eye_color: 'brown', homeworld: 'Alderaan', url: '2' }
+  '1': {
+    name: 'Luke Skywalker',
+    gender: 'male',
+    height: '172',
+    eye_color: 'blue',
+    homeworld: 'Tatooine',
+    url: '1',
+  },
+  '2': {
+    name: 'Leia Organa',
+    gender: 'female',
+    height: '150',
+    eye_color: 'brown',
+    homeworld: 'Alderaan',
+    url: '2',
+  },
 };
 
 describe('Flyout Component', () => {
@@ -27,8 +41,8 @@ describe('Flyout Component', () => {
   beforeEach(() => {
     store = mockStore({
       selectedItems: {
-        selectedItems
-      }
+        selectedItems,
+      },
     });
 
     store.dispatch = vi.fn();
@@ -45,7 +59,7 @@ describe('Flyout Component', () => {
     render(
       <Provider store={store}>
         <Flyout />
-      </Provider>
+      </Provider>,
     );
 
     expect(screen.getByText('2 items selected')).toBeInTheDocument();
@@ -55,7 +69,7 @@ describe('Flyout Component', () => {
     render(
       <Provider store={store}>
         <Flyout />
-      </Provider>
+      </Provider>,
     );
 
     fireEvent.click(screen.getByText('Unselect all'));
@@ -67,7 +81,7 @@ describe('Flyout Component', () => {
     render(
       <Provider store={store}>
         <Flyout />
-      </Provider>
+      </Provider>,
     );
 
     const downloadLink = screen.getByRole('link', { name: /download/i });

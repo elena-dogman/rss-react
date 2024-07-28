@@ -10,9 +10,9 @@ if (rootElement) {
   ReactDOM.createRoot(rootElement).render(
     <React.StrictMode>
       <ThemeProvider>
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
+        <ErrorBoundary>
+          <App />
+        </ErrorBoundary>
       </ThemeProvider>
     </React.StrictMode>,
   );

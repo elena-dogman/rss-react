@@ -25,10 +25,12 @@ interface FetchCharactersArgs {
 export const fetchCharacters = createAsyncThunk(
   'characters/fetchCharacters',
   async ({ term, page }: FetchCharactersArgs) => {
-    const response = await fetch(`https://swapi.dev/api/people/?search=${term}&page=${page}`);
+    const response = await fetch(
+      `https://swapi.dev/api/people/?search=${term}&page=${page}`,
+    );
     const data = await response.json();
     return { characters: data.results, totalPages: Math.ceil(data.count / 10) };
-  }
+  },
 );
 
 const characterSlice = createSlice({
@@ -49,7 +51,7 @@ const characterSlice = createSlice({
     },
     setIsLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -64,8 +66,14 @@ const characterSlice = createSlice({
       .addCase(fetchCharacters.rejected, (state) => {
         state.isLoading = false;
       });
-  }
+  },
 });
 
-export const { setCharacters, setHomeworlds, setCurrentPage, setTotalPages, setIsLoading } = characterSlice.actions;
+export const {
+  setCharacters,
+  setHomeworlds,
+  setCurrentPage,
+  setTotalPages,
+  setIsLoading,
+} = characterSlice.actions;
 export default characterSlice.reducer;
