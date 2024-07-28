@@ -16,7 +16,7 @@
 }
 
 .light-theme {
-  --background: #D5D5D5;
+  --background: white;
   --background-image: url('../../assets/background-light.jpg');
   --base-color: white;
   --main-text-color: black;

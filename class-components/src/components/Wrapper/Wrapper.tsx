@@ -12,7 +12,7 @@ const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { theme } = themeContext;
 
   return (
-    <div className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
+    <div className={theme === 'dark' ? 'dark-theme' : 'light-theme'} style={{ position: 'relative', width: '100vw', height: '100vh' }}>
       {isLoading && <Loader />}
       {children}
     </div>

@@ -6,6 +6,7 @@ import {
   fetchHomeworld,
   fetchCharacterDetails,
 } from '../characters';
+import { DetailedCharacter } from '../../types/types';
 
 const mock = new MockAdapter(axios);
 
@@ -68,6 +69,13 @@ describe('API functions', () => {
         'https://swapi.dev/api/people/?search=invalid&page=1',
       );
     });
+
+    it('should handle network errors gracefully', async () => {
+      (global.fetch as unknown as jest.Mock).mockRejectedValueOnce(new Error('Network Error'));
+
+      await expect(fetchCharacters('luke', 1)).rejects.toThrow('Network Error');
+      expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/people/?search=luke&page=1');
+    });
   });
 
   describe('fetchHomeworld', () => {
@@ -88,16 +96,27 @@ describe('API functions', () => {
 
       await expect(fetchHomeworld(url)).rejects.toThrow();
     });
+
+    it('should handle network errors gracefully', async () => {
+      const url = 'https://swapi.dev/api/planets/1/';
+
+      mock.onGet(url).networkError();
+
+      await expect(fetchHomeworld(url)).rejects.toThrow('Network Error');
+    });
   });
 
   describe('fetchCharacterDetails', () => {
     it('should fetch character details and return them', async () => {
       const url = 'https://swapi.dev/api/people/1/';
-      const responseData = {
+      const responseData: DetailedCharacter = {
         name: 'Luke Skywalker',
+        birth_year: '19BBY',
         gender: 'male',
         height: '172',
+        mass: '77',
         eye_color: 'blue',
+        skin_color: 'fair',
         homeworld: 'https://swapi.dev/api/planets/1/',
         url,
       };
@@ -114,6 +133,14 @@ describe('API functions', () => {
       mock.onGet(url).reply(404);
 
       await expect(fetchCharacterDetails(url)).rejects.toThrow();
+    });
+
+    it('should handle network errors gracefully', async () => {
+      const url = 'https://swapi.dev/api/people/1/';
+
+      mock.onGet(url).networkError();
+
+      await expect(fetchCharacterDetails(url)).rejects.toThrow('Network Error');
     });
   });
 });

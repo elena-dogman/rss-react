@@ -17,8 +17,10 @@ import { Character } from '../../types/types';
 import Flyout from '../../components/Flyout/Flyout';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootState } from '../../store/store';
+import { useLoading } from '../../contexts/useLoading';
 
 const MainPageContent: React.FC = () => {
+  const { setLoading, isLoading } = useLoading();
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -27,30 +29,26 @@ const MainPageContent: React.FC = () => {
   const page = parseInt(searchParams.get('page') || '1', 10);
   const detailId = searchParams.get('details');
 
-  const { characters, homeworlds, isLoading, totalPages } = useAppSelector(
+  const { characters, homeworlds, isLoading: charactersLoading, totalPages } = useAppSelector(
     (state: RootState) => state.characters,
   );
-  const { data: selectedCharacter, isLoading: isDetailLoading } =
-    useFetchCharacterDetailsQuery(detailId || '');
-  const [homeworldsState, setHomeworldsState] = useState<{
-    [url: string]: string;
-  }>({});
+  const { data: selectedCharacter, isLoading: isDetailLoading } = useFetchCharacterDetailsQuery(detailId || '');
+  const [homeworldsState, setHomeworldsState] = useState<{ [url: string]: string }>({});
 
-  const handleHomeworldFetch = useCallback(
-    (url: string, name: string) => {
-      if (!homeworlds[url]) {
-        setHomeworldsState((prev) => ({ ...prev, [url]: name }));
-        dispatch(setHomeworlds({ ...homeworlds, [url]: name }));
-      }
-    },
-    [homeworlds, dispatch],
-  );
+  const handleHomeworldFetch = useCallback((url: string, name: string) => {
+    if (!homeworlds[url]) {
+      setHomeworldsState(prev => ({ ...prev, [url]: name }));
+      dispatch(setHomeworlds({ ...homeworlds, [url]: name }));
+    }
+  }, [homeworlds, dispatch]);
 
   const handlePageChange = (newPage: number) => {
     const params = new URLSearchParams(location.search);
     params.set('page', newPage.toString());
     navigate(`?${params.toString()}`);
+    setLoading(true);
     dispatch(setCurrentPage(newPage));
+    dispatch(fetchCharacters({ term, page: newPage })).finally(() => setLoading(false));
   };
 
   const handleCharacterClick = (character: Character) => {
@@ -66,15 +64,16 @@ const MainPageContent: React.FC = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     dispatch(setSearchTerm(term));
     dispatch(setPage(page));
     dispatch(setCurrentPage(page));
-    dispatch(fetchCharacters({ term, page }));
-  }, [term, page, dispatch]);
+    dispatch(fetchCharacters({ term, page })).finally(() => setLoading(false));
+  }, [term, page, dispatch, setLoading]);
 
   return (
     <div className={styles.mainPage}>
-      {characters.length === 0 && !isLoading ? (
+      {characters.length === 0 && !charactersLoading ? (
         <div className={styles['no-results']} data-testid="no-results">
           <img
             src="/assets/yoda.png"
@@ -105,11 +104,13 @@ const MainPageContent: React.FC = () => {
                 onFetch={handleHomeworldFetch}
               />
             ))}
-            <Pagination
-              currentPage={page}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
+            {!isLoading && (
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           </div>
           {detailId && selectedCharacter && (
             <div className={styles.details}>
@@ -125,7 +126,7 @@ const MainPageContent: React.FC = () => {
           )}
         </div>
       )}
-      <Flyout />
+      {!isLoading && <Flyout />}
     </div>
   );
 };

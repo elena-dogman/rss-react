@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>4/22</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>7/7</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">18.18% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>4/22</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -93,54 +93,54 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import axios from 'axios';
 import { DetailedCharacter } from '../types/types';
 &nbsp;
-export const fetchCharacters = <span class="fstat-no" title="function not covered" >async (term: string, page: number = 1) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const url = `https://swapi.dev/api/people/?search=${term}&amp;page=${page}`;</span>
-<span class="cstat-no" title="statement not covered" >  console.log('Fetching URL:', url);</span>
-<span class="cstat-no" title="statement not covered" >  const response = await fetch(url);</span>
-<span class="cstat-no" title="statement not covered" >  if (!response.ok) {</span>
-<span class="cstat-no" title="statement not covered" >    throw new Error(`Error fetching characters: ${response.status}`);</span>
-<span class="cstat-no" title="statement not covered" >  }</span>
-<span class="cstat-no" title="statement not covered" >  const data = await response.json();</span>
-<span class="cstat-no" title="statement not covered" >  const totalPages = Math.ceil(data.count / 10);</span>
-<span class="cstat-no" title="statement not covered" >  return { characters: data.results, totalPages };</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+export const fetchCharacters = async (term: string, page: number = 1) =&gt; {
+  const url = `https://swapi.dev/api/people/?search=${term}&amp;page=${page}`;
+  console.log('Fetching URL:', url);
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Error fetching characters: ${response.status}`);
+  }
+  const data = await response.json();
+  const totalPages = Math.ceil(data.count / 10);
+  return { characters: data.results, totalPages };
+};
 &nbsp;
-export const fetchHomeworld = <span class="fstat-no" title="function not covered" >async (url: string) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const response = await axios.get(url);</span>
-<span class="cstat-no" title="statement not covered" >  return response.data.name;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+export const fetchHomeworld = async (url: string) =&gt; {
+  const response = await axios.get(url);
+  return response.data.name;
+};
 &nbsp;
-export const fetchCharacterDetails = <span class="fstat-no" title="function not covered" >async (</span>
-<span class="cstat-no" title="statement not covered" >  url: string,</span>
-<span class="cstat-no" title="statement not covered" >): Promise&lt;DetailedCharacter&gt; =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  const response = await axios.get(url);</span>
-<span class="cstat-no" title="statement not covered" >  return response.data;</span>
-<span class="cstat-no" title="statement not covered" >};</span>
+export const fetchCharacterDetails = async (
+  url: string,
+): Promise&lt;DetailedCharacter&gt; =&gt; {
+  const response = await axios.get(url);
+  return response.data;
+};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -148,7 +148,7 @@ export const fetchCharacterDetails = <span class="fstat-no" title="function not 
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-07-28T06:23:11.958Z
+                at 2024-07-28T14:51:37.658Z
             </div>
         <script src="../prettify.js"></script>
         <script>

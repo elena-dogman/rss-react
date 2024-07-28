@@ -91,18 +91,11 @@ describe('MainPage Component', () => {
       {},
     );
 
-    await waitFor(
-      () => {
-        expect(
-          screen.queryByText('Mocked Loader Component'),
-        ).not.toBeInTheDocument();
-      },
-      { timeout: 3000 },
-    );
-
     await waitFor(() => {
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
-    });
+      expect(screen.queryByText('Mocked Loader Component')).not.toBeInTheDocument();
+    }, { timeout: 3000 });
+
     fetchCharactersMock.mockRestore();
     fetchHomeworldMock.mockRestore();
     fetchCharacterDetailsMock.mockRestore();
@@ -144,19 +137,11 @@ describe('MainPage Component', () => {
       {},
     );
 
-    await waitFor(
-      () => {
-        expect(
-          screen.queryByText('Mocked Loader Component'),
-        ).not.toBeInTheDocument();
-      },
-      { timeout: 3000 },
-    );
-
     await waitFor(() => {
       expect(screen.getByText('Luke Skywalker')).toBeInTheDocument();
       expect(screen.getByText('Leia Organa')).toBeInTheDocument();
-    });
+      expect(screen.queryByText('Mocked Loader Component')).not.toBeInTheDocument();
+    }, { timeout: 3000 });
 
     fetchCharactersMock.mockRestore();
     fetchHomeworldMock.mockRestore();
