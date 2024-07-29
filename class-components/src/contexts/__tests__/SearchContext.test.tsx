@@ -4,7 +4,6 @@ import '@testing-library/jest-dom';
 import { describe, it, expect } from 'vitest';
 import { SearchContext, SearchProvider } from '../SearchContext';
 
-
 const TestComponent: React.FC = () => {
   const context = useContext(SearchContext);
   if (!context) {
@@ -25,7 +24,7 @@ describe('SearchProvider', () => {
     render(
       <SearchProvider>
         <TestComponent />
-      </SearchProvider>
+      </SearchProvider>,
     );
 
     const searchTermElement = screen.getByTestId('search-term');
@@ -36,7 +35,7 @@ describe('SearchProvider', () => {
     render(
       <SearchProvider>
         <TestComponent />
-      </SearchProvider>
+      </SearchProvider>,
     );
 
     const searchTermElement = screen.getByTestId('search-term');

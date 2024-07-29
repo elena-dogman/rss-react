@@ -11,10 +11,12 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <ThrowError />
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
-    expect(screen.getByText('Oops... Something went wrong')).toBeInTheDocument();
+    expect(
+      screen.getByText('Oops... Something went wrong'),
+    ).toBeInTheDocument();
     expect(screen.getByText('Refresh the page')).toBeInTheDocument();
   });
 
@@ -22,7 +24,7 @@ describe('ErrorBoundary', () => {
     render(
       <ErrorBoundary>
         <div>Test Child</div>
-      </ErrorBoundary>
+      </ErrorBoundary>,
     );
 
     expect(screen.getByText('Test Child')).toBeInTheDocument();

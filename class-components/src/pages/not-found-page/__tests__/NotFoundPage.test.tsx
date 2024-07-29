@@ -5,7 +5,10 @@ import { vi } from 'vitest';
 import NotFoundPage from '../NotFoundPage';
 
 vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof import('react-router-dom')>('react-router-dom');
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
   return {
     ...actual,
     useNavigate: vi.fn(),
@@ -17,15 +20,19 @@ describe('NotFoundPage', () => {
     render(
       <BrowserRouter>
         <NotFoundPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const trooperImages = screen.getAllByAltText('trooper');
     expect(trooperImages).toHaveLength(2);
 
     expect(screen.getByText('Trooper report:')).toBeInTheDocument();
-    expect(screen.getByText('This is not the page you are looking for. Move along.')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Go Back/i })).toBeInTheDocument();
+    expect(
+      screen.getByText('This is not the page you are looking for. Move along.'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /Go Back/i }),
+    ).toBeInTheDocument();
   });
 
   it('should call navigate function when Go Back button is clicked', () => {
@@ -35,7 +42,7 @@ describe('NotFoundPage', () => {
     render(
       <BrowserRouter>
         <NotFoundPage />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     fireEvent.click(screen.getByRole('button', { name: /Go Back/i }));

@@ -1,55 +1,80 @@
-import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './MainPage.module.scss';
 import Results from '../../components/Results/Results';
-import Loader from '../../components/Loader/Loader';
-import { useSearch } from '../../contexts/useSearch';
 import CharacterDetails from '../../components/CharacterDetails/CharacterDetails';
-import useCharacters from '../../hooks/useCharacters';
-import useCharacterDetails from '../../hooks/useCharacterDetails';
 import Pagination from '../../components/Pagination/Pagination';
+import HomeworldFetcher from '../../components/HomeworldFetcher/HomeworldFetcher';
+import { useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
+import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
+import {
+  fetchCharacters,
+  setCurrentPage,
+  setHomeworlds,
+} from '../../store/reducers/charactersSlice';
+import { DetailProvider } from '../../contexts/DetailContext';
+import { Character } from '../../types/types';
+import Flyout from '../../components/Flyout/Flyout';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { RootState } from '../../store/store';
+import { useLoading } from '../../contexts/useLoading';
 
-const MainPage: React.FC = () => {
-  const { searchTerm } = useSearch();
-  const {
-    characters,
-    homeworlds,
-    currentPage,
-    totalPages,
-    isLoading,
-    handlePageChange,
-    fetchCharactersData
-  } = useCharacters(searchTerm);
-  const {
-    selectedCharacter,
-    isDetailLoading,
-    fetchCharacterDetailsById,
-    handleCharacterClick,
-    handleCloseDetail,
-  } = useCharacterDetails(currentPage);
+const MainPageContent: React.FC = () => {
+  const { setLoading, isLoading } = useLoading();
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const searchParams = new URLSearchParams(location.search);
+  const term = searchParams.get('term') || '';
+  const page = parseInt(searchParams.get('page') || '1', 10);
+  const detailId = searchParams.get('details');
+
+  const { characters, homeworlds, isLoading: charactersLoading, totalPages } = useAppSelector(
+    (state: RootState) => state.characters,
+  );
+  const { data: selectedCharacter, isLoading: isDetailLoading } = useFetchCharacterDetailsQuery(detailId || '');
+  const [homeworldsState, setHomeworldsState] = useState<{ [url: string]: string }>({});
+
+  const handleHomeworldFetch = useCallback((url: string, name: string) => {
+    if (!homeworlds[url]) {
+      setHomeworldsState(prev => ({ ...prev, [url]: name }));
+      dispatch(setHomeworlds({ ...homeworlds, [url]: name }));
+    }
+  }, [homeworlds, dispatch]);
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(location.search);
+    params.set('page', newPage.toString());
+    navigate(`?${params.toString()}`);
+    setLoading(true);
+    dispatch(setCurrentPage(newPage));
+    dispatch(fetchCharacters({ term, page: newPage })).finally(() => setLoading(false));
+  };
+
+  const handleCharacterClick = (character: Character) => {
+    const params = new URLSearchParams(location.search);
+    params.set('details', character.url);
+    navigate(`?${params.toString()}`);
+  };
+
+  const handleCloseDetail = () => {
+    const params = new URLSearchParams(location.search);
+    params.delete('details');
+    navigate(`?${params.toString()}`);
+  };
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const page = parseInt(searchParams.get('frontpage') || '1', 10);
-    const detailId = searchParams.get('details');
-
-    if (detailId) {
-      fetchCharacterDetailsById(detailId);
-    }
-
-    fetchCharactersData(searchTerm, page);
-  }, [location.search, searchTerm]);
+    setLoading(true);
+    dispatch(setSearchTerm(term));
+    dispatch(setPage(page));
+    dispatch(setCurrentPage(page));
+    dispatch(fetchCharacters({ term, page })).finally(() => setLoading(false));
+  }, [term, page, dispatch, setLoading]);
 
   return (
     <div className={styles.mainPage}>
-      {isLoading ? (
-        <div className={styles.loaderWrapper}>
-          <Loader />
-          <span className={styles.loadingText}>Loading</span>
-        </div>
-      ) : characters.length === 0 ? (
-        <div className={styles['no-results']}>
+      {characters.length === 0 && !charactersLoading ? (
+        <div className={styles['no-results']} data-testid="no-results">
           <img
             src="/assets/yoda.png"
             className={styles['no-results-image']}
@@ -67,23 +92,49 @@ const MainPage: React.FC = () => {
       ) : (
         <div className={styles.content}>
           <div className={styles.results}>
-            <Results characters={characters} homeworlds={homeworlds} onCharacterClick={handleCharacterClick} />
-            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+            <Results
+              characters={characters}
+              homeworlds={homeworlds}
+              onCharacterClick={handleCharacterClick}
+            />
+            {characters.map((character) => (
+              <HomeworldFetcher
+                key={character.url}
+                url={character.homeworld}
+                onFetch={handleHomeworldFetch}
+              />
+            ))}
+            {!isLoading && (
+              <Pagination
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            )}
           </div>
-          {selectedCharacter && (
+          {detailId && selectedCharacter && (
             <div className={styles.details}>
               <CharacterDetails
                 character={selectedCharacter}
                 isLoading={isDetailLoading}
                 onClose={handleCloseDetail}
-                homeworld={selectedCharacter ? homeworlds[selectedCharacter.homeworld] : 'Loading...'}
+                homeworld={
+                  homeworldsState[selectedCharacter.homeworld] || 'Loading...'
+                }
               />
             </div>
           )}
         </div>
       )}
+      {!isLoading && <Flyout />}
     </div>
   );
 };
+
+const MainPage: React.FC = () => (
+  <DetailProvider>
+    <MainPageContent />
+  </DetailProvider>
+);
 
 export default MainPage;

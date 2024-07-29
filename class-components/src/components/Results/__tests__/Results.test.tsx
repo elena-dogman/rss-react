@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect } from 'vitest';
 import Results from '../Results';
+import { renderWithProviders } from '../../../utils/test-utils';
+
 interface Homeworlds {
   [url: string]: string;
 }
@@ -32,29 +34,38 @@ const homeworlds: Homeworlds = {
 
 describe('Results Component', () => {
   it('should render the image and characters', () => {
-    render(<Results characters={characters} homeworlds={homeworlds} onCharacterClick={() => {}} />);
+    renderWithProviders(
+      <Results
+        characters={characters}
+        homeworlds={homeworlds}
+        onCharacterClick={() => {}}
+      />,
+    );
 
     characters.forEach((character) => {
       const characterName = screen.getByText(character.name);
       expect(characterName).toBeInTheDocument();
 
-      const characterGender = screen.getByText((_, element) =>
-        element?.textContent === `Gender: ${character.gender}`
+      const characterGender = screen.getByText(
+        (_, element) => element?.textContent === `Gender: ${character.gender}`,
       );
       expect(characterGender).toBeInTheDocument();
 
-      const characterHeight = screen.getByText((_, element) =>
-        element?.textContent === `Height: ${character.height}`
+      const characterHeight = screen.getByText(
+        (_, element) => element?.textContent === `Height: ${character.height}`,
       );
       expect(characterHeight).toBeInTheDocument();
 
-      const characterEyeColor = screen.getByText((_, element) =>
-        element?.textContent === `Eye Color: ${character.eye_color}`
+      const characterEyeColor = screen.getByText(
+        (_, element) =>
+          element?.textContent === `Eye Color: ${character.eye_color}`,
       );
       expect(characterEyeColor).toBeInTheDocument();
 
-      const characterHomeworld = screen.getByText((_, element) =>
-        element?.textContent === `Homeworld: ${homeworlds[character.homeworld]}`
+      const characterHomeworld = screen.getByText(
+        (_, element) =>
+          element?.textContent ===
+          `Homeworld: ${homeworlds[character.homeworld]}`,
       );
       expect(characterHomeworld).toBeInTheDocument();
     });
@@ -72,10 +83,16 @@ describe('Results Component', () => {
       },
     ];
 
-    render(<Results characters={charactersWithUnknownHomeworld} homeworlds={homeworlds} onCharacterClick={() => {}} />);
+    renderWithProviders(
+      <Results
+        characters={charactersWithUnknownHomeworld}
+        homeworlds={homeworlds}
+        onCharacterClick={() => {}}
+      />,
+    );
 
-    const loadingHomeworld = screen.getByText((_, element) =>
-      element?.textContent === 'Homeworld: Loading...'
+    const loadingHomeworld = screen.getByText(
+      (_, element) => element?.textContent === 'Homeworld: Loading...',
     );
     expect(loadingHomeworld).toBeInTheDocument();
   });

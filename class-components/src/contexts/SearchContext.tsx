@@ -5,9 +5,13 @@ export interface SearchContextProps {
   setSearchTerm: (term: string) => void;
 }
 
-export const SearchContext = createContext<SearchContextProps | undefined>(undefined);
+export const SearchContext = createContext<SearchContextProps | undefined>(
+  undefined,
+);
 
-export const SearchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const SearchProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (

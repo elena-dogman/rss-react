@@ -1,5 +1,5 @@
-import { useContext } from "react";
-import { SearchContext } from "./SearchContext";
+import { useContext } from 'react';
+import { SearchContext } from './SearchContext';
 
 export const useSearch = () => {
   const context = useContext(SearchContext);

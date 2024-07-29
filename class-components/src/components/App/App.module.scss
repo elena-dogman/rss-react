@@ -4,7 +4,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  background-image: url('../../assets/background.jpg');
+  background-image: var(--background-image);
   background-position: center;
   background-repeat: no-repeat;
 }

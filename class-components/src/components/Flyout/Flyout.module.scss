@@ -1,0 +1,43 @@
+@import '../../styles/variables.scss';
+
+.flyout {
+  background-color: var(--flyout-background);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: $font-family-base;
+}
+
+.flyout-download-btn,
+.flyout-unselect-btn{
+  margin: 0 5px;
+  padding: 10px 20px;
+  background-color: var(--base-color);
+  border: none;
+  color: var(--main-text-color);
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.flyout button:hover {
+  box-shadow: var(--flyout-button-hover);
+}
+
+.flyout-counter {
+  font-size: $font-size-small;
+  padding: 5px;
+  margin: 0 0 0 10px;
+  width: 120px;
+}
+
+.download-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.flyout-download-btn {
+  padding: 5px 15px;
+}

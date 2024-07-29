@@ -1,7 +1,12 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { fetchCharacters, fetchHomeworld, fetchCharacterDetails } from '../characters';
+import {
+  fetchCharacters,
+  fetchHomeworld,
+  fetchCharacterDetails,
+} from '../characters';
+import { DetailedCharacter } from '../../types/types';
 
 const mock = new MockAdapter(axios);
 
@@ -21,6 +26,7 @@ describe('API functions', () => {
 
     it('should fetch characters and return them with total pages', async () => {
       const term = 'luke';
+      const page = 1;
       const responseData = {
         count: 1,
         results: [
@@ -40,9 +46,14 @@ describe('API functions', () => {
         json: () => Promise.resolve(responseData),
       });
 
-      const result = await fetchCharacters(term);
-      expect(result).toEqual({ characters: responseData.results, totalPages: 1 });
-      expect(global.fetch).toHaveBeenCalledWith(`https://swapi.dev/api/people/?search=${term}`);
+      const result = await fetchCharacters(term, page);
+      expect(result).toEqual({
+        characters: responseData.results,
+        totalPages: 1,
+      });
+      expect(global.fetch).toHaveBeenCalledWith(
+        `https://swapi.dev/api/people/?search=${term}&page=${page}`,
+      );
     });
 
     it('should throw an error if the response is not ok', async () => {
@@ -51,8 +62,19 @@ describe('API functions', () => {
         status: 404,
       });
 
-      await expect(fetchCharacters('invalid')).rejects.toThrow('Error fetching characters: 404');
-      expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/people/?search=invalid');
+      await expect(fetchCharacters('invalid', 1)).rejects.toThrow(
+        'Error fetching characters: 404',
+      );
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://swapi.dev/api/people/?search=invalid&page=1',
+      );
+    });
+
+    it('should handle network errors gracefully', async () => {
+      (global.fetch as unknown as jest.Mock).mockRejectedValueOnce(new Error('Network Error'));
+
+      await expect(fetchCharacters('luke', 1)).rejects.toThrow('Network Error');
+      expect(global.fetch).toHaveBeenCalledWith('https://swapi.dev/api/people/?search=luke&page=1');
     });
   });
 
@@ -74,16 +96,27 @@ describe('API functions', () => {
 
       await expect(fetchHomeworld(url)).rejects.toThrow();
     });
+
+    it('should handle network errors gracefully', async () => {
+      const url = 'https://swapi.dev/api/planets/1/';
+
+      mock.onGet(url).networkError();
+
+      await expect(fetchHomeworld(url)).rejects.toThrow('Network Error');
+    });
   });
 
   describe('fetchCharacterDetails', () => {
     it('should fetch character details and return them', async () => {
       const url = 'https://swapi.dev/api/people/1/';
-      const responseData = {
+      const responseData: DetailedCharacter = {
         name: 'Luke Skywalker',
+        birth_year: '19BBY',
         gender: 'male',
         height: '172',
+        mass: '77',
         eye_color: 'blue',
+        skin_color: 'fair',
         homeworld: 'https://swapi.dev/api/planets/1/',
         url,
       };
@@ -100,6 +133,14 @@ describe('API functions', () => {
       mock.onGet(url).reply(404);
 
       await expect(fetchCharacterDetails(url)).rejects.toThrow();
+    });
+
+    it('should handle network errors gracefully', async () => {
+      const url = 'https://swapi.dev/api/people/1/';
+
+      mock.onGet(url).networkError();
+
+      await expect(fetchCharacterDetails(url)).rejects.toThrow('Network Error');
     });
   });
 });

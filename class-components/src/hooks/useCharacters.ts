@@ -1,8 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Character, fetchHomeworld, fetchCharacters } from '../api/characters';
+import { fetchHomeworld, fetchCharacters } from '../api/characters';
+import { useSearch } from '../contexts/useSearch';
+import { Character } from '../types/types';
 
-const useCharacters = (searchTerm: string) => {
+const useCharacters = () => {
+  const { searchTerm } = useSearch();
   const [characters, setCharacters] = useState<Character[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -11,52 +14,67 @@ const useCharacters = (searchTerm: string) => {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const fetchHomeworlds = useCallback(async (characters: Character[]) => {
-    const homeworldsPromises = characters.map(async (character) => {
-      if (!homeworlds[character.homeworld]) {
-        const name = await fetchHomeworld(character.homeworld);
-        return { url: character.homeworld, name };
+  const fetchHomeworlds = useCallback(
+    async (characters: Character[]) => {
+      const homeworldsPromises = characters.map(async (character) => {
+        if (!homeworlds[character.homeworld]) {
+          const name = await fetchHomeworld(character.homeworld);
+          return { url: character.homeworld, name };
+        }
+        return null;
+      });
+
+      const homeworldsData = await Promise.all(homeworldsPromises);
+      const newHomeworlds: { [url: string]: string } = {};
+
+      homeworldsData.forEach((homeworld) => {
+        if (homeworld) {
+          newHomeworlds[homeworld.url] = homeworld.name;
+        }
+      });
+
+      setHomeworlds((prevHomeworlds) => ({
+        ...prevHomeworlds,
+        ...newHomeworlds,
+      }));
+    },
+    [homeworlds],
+  );
+
+  const fetchCharactersData = useCallback(
+    async (page: number) => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const { characters, totalPages } = await fetchCharacters(
+          searchTerm,
+          page,
+        );
+        setCharacters(characters);
+        setCurrentPage(page);
+        setTotalPages(totalPages);
+        await fetchHomeworlds(characters);
+      } catch (error) {
+        console.error('Error fetching characters:', error);
+        setError('Failed to fetch characters. Please try again later.');
+      } finally {
+        setIsLoading(false);
       }
-      return null;
-    });
+    },
+    [fetchHomeworlds, searchTerm],
+  );
 
-    const homeworldsData = await Promise.all(homeworldsPromises);
-    const newHomeworlds: { [url: string]: string } = {};
-
-    homeworldsData.forEach((homeworld) => {
-      if (homeworld) {
-        newHomeworlds[homeworld.url] = homeworld.name;
-      }
-    });
-
-    setHomeworlds((prevHomeworlds) => ({
-      ...prevHomeworlds,
-      ...newHomeworlds,
-    }));
-  }, [homeworlds]);
-
-  const fetchCharactersData = useCallback(async (term: string, page: number) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const { characters, totalPages } = await fetchCharacters(term);
-      setCharacters(characters);
+  const handlePageChange = useCallback(
+    (page: number) => {
       setCurrentPage(page);
-      setTotalPages(totalPages);
-      await fetchHomeworlds(characters);
-    } catch (error) {
-      console.error('Error fetching characters:', error);
-      setError('Failed to fetch characters. Please try again later.');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [fetchHomeworlds]);
+      navigate(`/?page=${page}`);
+    },
+    [navigate],
+  );
 
-  const handlePageChange = useCallback((page: number) => {
-    setCurrentPage(page);
-    fetchCharactersData(searchTerm, page);
-    navigate(`/?frontpage=${page}`);
-  }, [fetchCharactersData, searchTerm, navigate]);
+  useEffect(() => {
+    fetchCharactersData(currentPage);
+  }, [currentPage]);
 
   return {
     characters,
