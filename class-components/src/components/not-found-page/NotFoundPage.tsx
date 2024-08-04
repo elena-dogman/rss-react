@@ -1,6 +1,9 @@
 import React from 'react';
 import styles from './NotFoundPage.module.scss';
 import { useNavigate } from 'react-router-dom';
+import leftTrooper from '../../../public/assets/left-trooper.png';
+import rightTrooper from '../../../public/assets/right-trooper.png';
+import backArrow from '../../../public/assets/back-arrow.png';
 
 const NotFoundPage: React.FC = () => {
   const navigate = useNavigate();
@@ -13,7 +16,7 @@ const NotFoundPage: React.FC = () => {
     <div className={styles['not-found-container']}>
       <img
         className={styles['not-found-img-left']}
-        src="/assets/left-trooper.png"
+        src={leftTrooper.src}
         alt="trooper"
       />
       <div className={styles['not-found-content']}>
@@ -23,7 +26,7 @@ const NotFoundPage: React.FC = () => {
         </p>
         <button className={styles['go-back-button']} onClick={handleGoBack}>
           <img
-            src="/assets/back-arrow.png"
+            src={backArrow.src}
             alt="Go back"
             className={styles['back-arrow']}
           />
@@ -32,7 +35,7 @@ const NotFoundPage: React.FC = () => {
       </div>
       <img
         className={styles['not-found-img-right']}
-        src="/assets/right-trooper.png"
+        src={rightTrooper.src}
         alt="trooper"
       />
     </div>

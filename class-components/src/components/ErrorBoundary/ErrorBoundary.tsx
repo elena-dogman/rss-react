@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './ErrorBoundary.module.scss';
+import C3PO from '../../../public/assets/C-3PO.png'
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -30,7 +31,10 @@ class ErrorBoundary extends React.Component<
     if (this.state.hasError) {
       return (
         <div className={styles['error-container']}>
-          <img src="/assets/C-3PO.png" className={styles['error-image']}></img>
+          <img
+            src={C3PO.src}
+            className={styles['error-image']}>
+            </img>
           <div className={styles['error-content']}>
             <h1 className={styles['error-title']}>
               Oops... Something went wrong

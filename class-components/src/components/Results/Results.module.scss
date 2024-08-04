@@ -10,12 +10,12 @@
 
 .characters-container {
   display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    box-sizing: border-box;
-    max-width: 1200px;
-  }
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  box-sizing: border-box;
+  max-width: 1200px;
+}
 
 .character {
   display: flex;
@@ -28,6 +28,7 @@
   padding: 10px 20px;
   font-size: 16px;
   background-color: var(--base-color);
+  position: relative; // Добавьте это, чтобы lightsaber был позиционирован относительно карточки
 }
 
 .character.selected {
@@ -46,8 +47,8 @@
 
 .lightsaber {
   position: absolute;
-  bottom: 2%;
-  right: 10%;
+  bottom: 10px; // Измените это, чтобы позиционировать чекбокс внутри карточки
+  right: 10px; // Измените это, чтобы позиционировать чекбокс внутри карточки
 }
 
 .lightsaber label {
@@ -104,7 +105,7 @@
 }
 
 .lightsaber .plasma {
-  transition: height 300ms, ;
+  transition: height 300ms;
   -moz-transition: height 300ms;
   -webkit-transition: height 300ms;
   -o-transition: height 300ms;
@@ -153,13 +154,6 @@
   -webkit-animation-iteration-count: infinite;
   -o-animation-iteration-count: infinite;
   -ms-animation-iteration-count: infinite;
-}
-
-div {
-  -webkit-transform: translateZ(0);
-  -o-transform: translateZ(0);
-  -moz-transform: translateZ(0);
-  transform: translateZ(0);
 }
 
 @keyframes obi-wan {
@@ -234,16 +228,16 @@ div {
 
 @media (max-width: 520px) {
   .characters-container {
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 
-    .character {
-      width: 100%;
-    }
+  .character {
+    width: 100%;
+  }
 
-    .results {
-      align-items: center;
-    }
+  .results {
+    align-items: center;
+  }
 }

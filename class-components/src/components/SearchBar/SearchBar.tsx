@@ -1,7 +1,10 @@
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './SearchBar.module.scss';
 import { useSearch } from '../../contexts/useSearch';
+import searchImage from '../../../public/assets/search.png';
 
 const useSearchTerm = () => {
   const [searchTerm, setSearchTerm] = useState(
@@ -41,8 +44,8 @@ const SearchBar: React.FC = () => {
         placeholder={placeholder}
       />
       <button className={styles['search-button']} type="submit">
-        <img
-          src="/assets/search.png"
+       <img
+          src={searchImage.src}
           alt="Search"
           className={styles['search-image']}
         />

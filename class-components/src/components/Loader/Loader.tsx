@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Loader.module.scss';
-import loaderSvgUrl from '../../assets/loader.svg';
+import loaderSvgUrl from '../../../public/assets/loader.svg';
 
 const Loader: React.FC = () => {
   return (

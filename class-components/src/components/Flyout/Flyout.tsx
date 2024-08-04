@@ -2,7 +2,7 @@ import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { clearItems } from '../../store/reducers/selectedItemsSlice';
 import styles from './Flyout.module.scss';
-import downloadIcon from '../../assets/download.png';
+import downloadIcon from '../../../public/assets/download.png';
 import { Character } from '../../types/types';
 
 const Flyout: React.FC = () => {
@@ -56,7 +56,7 @@ const Flyout: React.FC = () => {
         download={`starwars_${itemsCount}.csv`}
       >
         <img
-          src={downloadIcon}
+          src={downloadIcon.src}
           alt="Download"
           className={styles['download-icon']}
         />

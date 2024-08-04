@@ -56,7 +56,7 @@ const Results: React.FC<ResultsProps> = ({
               </p>
             </div>
             <div className={styles.lightsaber}>
-              <label htmlFor={`obi-wan-${character.url}`}></label>
+              <label htmlFor={`obi-wan-${character.url}`}>Toggle Lightsaber</label>
               <input
                 type="checkbox"
                 id={`obi-wan-${character.url}`}

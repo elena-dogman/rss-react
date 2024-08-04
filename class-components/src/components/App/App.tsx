@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import styles from './App.module.scss';
-import MainPage from '../../pages/main-page/MainPage';
-import NotFoundPage from '../../pages/not-found-page/NotFoundPage';
+import MainPage from '../main-page/MainPage';
+import NotFoundPage from '../not-found-page/NotFoundPage';
 import { SearchProvider } from '../../contexts/SearchContext';
 import RootLayout from '../../layouts/root-layout';
 import CharacterDetails from '../CharacterDetails/CharacterDetails';

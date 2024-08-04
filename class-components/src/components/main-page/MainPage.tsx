@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import styles from './MainPage.module.scss';
-import Results from '../../components/Results/Results';
-import CharacterDetails from '../../components/CharacterDetails/CharacterDetails';
-import Pagination from '../../components/Pagination/Pagination';
-import HomeworldFetcher from '../../components/HomeworldFetcher/HomeworldFetcher';
+import Results from '../Results/Results';
+import CharacterDetails from '../CharacterDetails/CharacterDetails';
+import Pagination from '../Pagination/Pagination';
+import HomeworldFetcher from '../HomeworldFetcher/HomeworldFetcher';
 import { useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
 import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
 import {
@@ -14,10 +14,11 @@ import {
 } from '../../store/reducers/charactersSlice';
 import { DetailProvider } from '../../contexts/DetailContext';
 import { Character } from '../../types/types';
-import Flyout from '../../components/Flyout/Flyout';
+import Flyout from '../Flyout/Flyout';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { RootState } from '../../store/store';
 import { useLoading } from '../../contexts/useLoading';
+import yodaImg from '../../../public/assets/yoda.png';
 
 const MainPageContent: React.FC = () => {
   const { setLoading, isLoading } = useLoading();
@@ -76,7 +77,7 @@ const MainPageContent: React.FC = () => {
       {characters.length === 0 && !charactersLoading ? (
         <div className={styles['no-results']} data-testid="no-results">
           <img
-            src="/assets/yoda.png"
+            src={yodaImg.src}
             className={styles['no-results-image']}
             alt="Yoda"
           />
