@@ -6,7 +6,7 @@ const Loader: React.FC = () => {
   return (
     <div className={styles['loader-wrapper']}>
       <img
-        src={loaderSvgUrl}
+        src={loaderSvgUrl.src}
         alt="Loading..."
         className={styles['loader-image']}
       />

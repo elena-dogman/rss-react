@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useContext } from 'react';
 import Loader from '../Loader/Loader';
 import { ThemeContext } from '../../contexts/ThemeContext';

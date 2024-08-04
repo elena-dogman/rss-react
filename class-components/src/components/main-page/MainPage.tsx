@@ -43,26 +43,26 @@ const MainPageContent: React.FC = () => {
     }
   }, [homeworlds, dispatch]);
 
-  const handlePageChange = (newPage: number) => {
+  const handlePageChange = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
     params.set('page', newPage.toString());
     navigate(`?${params.toString()}`);
     setLoading(true);
     dispatch(setCurrentPage(newPage));
     dispatch(fetchCharacters({ term, page: newPage })).finally(() => setLoading(false));
-  };
+  }, [location.search, term, navigate, dispatch, setLoading]);
 
-  const handleCharacterClick = (character: Character) => {
+  const handleCharacterClick = useCallback((character: Character) => {
     const params = new URLSearchParams(location.search);
     params.set('details', character.url);
     navigate(`?${params.toString()}`);
-  };
+  }, [navigate, location.search]);
 
-  const handleCloseDetail = () => {
+  const handleCloseDetail = useCallback(() => {
     const params = new URLSearchParams(location.search);
     params.delete('details');
     navigate(`?${params.toString()}`);
-  };
+  }, [navigate, location.search]);
 
   useEffect(() => {
     setLoading(true);

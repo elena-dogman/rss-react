@@ -2,6 +2,7 @@ import { metadata } from './metadata';
 import '../styles/globals.scss';
 import SearchBar from '../components/SearchBar/SearchBar';
 import ThemeSelector from '../components/ThemeSelector/ThemeSelector';
+import Wrapper from '../components/Wrapper/Wrapper';
 
 export default function RootLayout({
   children,
@@ -15,6 +16,7 @@ export default function RootLayout({
         <meta name="description" content={metadata.description} />
       </head>
       <body>
+        <Wrapper>
         <div id="root">
           <header className="header">
             <SearchBar />
@@ -23,7 +25,8 @@ export default function RootLayout({
           <main>
             {children}
           </main>
-        </div>
+          </div>
+          </Wrapper>
       </body>
     </html>
   );
