@@ -6,10 +6,10 @@
 .f {
   display: flex;
   cursor: pointer;
-  align-items: center;
   position: relative;
   top: 30%;
-  left: 300%;
+  left: 200%;
+  align-items: center;
   -webkit-tap-highlight-color: transparent;
   color: white;
 }
@@ -44,7 +44,7 @@
 }
 
 .f__switch {
-  background: var(--switchBg);
+  background: rgb(86, 85, 85);
   border-radius: 1.5em;
   margin: 0 0.75em;
   width: 6em;
@@ -358,9 +358,3 @@
   font-size: 1.4rem;
   color: var(--main-text-color);
 }
-
-// @media (prefers-color-scheme: dark) {
-//   :root {
-//     --switchBg: #454954;
-//   }
-// }

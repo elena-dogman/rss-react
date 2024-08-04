@@ -12,3 +12,11 @@ body {
   box-sizing: border-box;
   font-family: $font-family-base;
 }
+
+header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+  flex-direction: row;
+}
