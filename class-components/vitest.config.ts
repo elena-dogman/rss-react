@@ -2,6 +2,7 @@
 
 import { defineConfig, coverageConfigDefaults } from 'vitest/config';
 import { resolve } from 'node:path';
+import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   resolve: {
@@ -21,4 +22,7 @@ export default defineConfig({
     },
     css: false,
   },
+   plugins: [
+    react()
+  ],
 });

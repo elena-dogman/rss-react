@@ -1,3 +1,4 @@
+import React from 'react';
 import { screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { describe, it, expect, vi } from 'vitest';
@@ -7,9 +8,9 @@ import { renderWithProviders } from '../../../utils/test-utils';
 
 vi.mock('../../CloseButton/CloseButton', () => ({
   __esModule: true,
-  default: ({ onClick }: { onClick: () => void }) => (
+  default: (({ onClick }: { onClick: () => void }) => (
     <button onClick={onClick}>Mocked Close Button</button>
-  ),
+  )) as React.FC<{ onClick: () => void }>,
 }));
 
 const character: DetailedCharacter = {
@@ -37,43 +38,43 @@ describe('CharacterDetails Component', () => {
     expect(screen.getByText(character.name)).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) =>
+        (_content, element) =>
           element?.textContent === `Birth Year: ${character.birth_year}`,
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) =>
+        (_content, element) =>
           element?.textContent === `Gender: ${character.gender}`,
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) =>
+        (_content, element) =>
           element?.textContent === `Height: ${character.height}`,
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) =>
+        (_content, element) =>
           element?.textContent === `Mass: ${character.mass}`,
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) =>
+        (_content, element) =>
           element?.textContent === `Eye Color: ${character.eye_color}`,
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) =>
+        (_content, element) =>
           element?.textContent === `Skin Color: ${character.skin_color}`,
       ),
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        (content, element) => element?.textContent === `Homeworld: Tatooine`,
+        (_content, element) => element?.textContent === `Homeworld: Tatooine`,
       ),
     ).toBeInTheDocument();
   });
