@@ -74,6 +74,8 @@ describe('MainPage Component', () => {
       },
     ];
 
+    const initialData = { characters, totalPages: 1 };
+
     const fetchCharactersMock = vi
       .spyOn(api, 'fetchCharacters')
       .mockResolvedValue({ characters, totalPages: 1 });
@@ -86,7 +88,7 @@ describe('MainPage Component', () => {
 
     renderWithProviders(
       <BrowserRouter>
-        <MainPage />
+        <MainPage initialData={initialData} />
       </BrowserRouter>,
       {},
     );
@@ -120,6 +122,9 @@ describe('MainPage Component', () => {
         url: '2',
       },
     ];
+
+    const initialData = { characters, totalPages: 1 };
+
     const fetchCharactersMock = vi
       .spyOn(api, 'fetchCharacters')
       .mockResolvedValue({ characters, totalPages: 1 });
@@ -132,7 +137,7 @@ describe('MainPage Component', () => {
 
     renderWithProviders(
       <BrowserRouter>
-        <MainPage />
+        <MainPage initialData={initialData} />
       </BrowserRouter>,
       {},
     );

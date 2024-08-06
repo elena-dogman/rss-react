@@ -2,7 +2,7 @@ import React, { createContext, useState, useCallback, ReactNode } from 'react';
 import { Character, DetailedCharacter } from '../types/types';
 import { fetchCharacterDetails } from '../api/characters';
 
-interface DetailContextProps {
+export interface DetailContextProps {
   selectedCharacter: DetailedCharacter | null;
   isDetailLoading: boolean;
   fetchCharacterDetailsById: (id: string) => Promise<void>;
