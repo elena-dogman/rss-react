@@ -28,7 +28,7 @@
   padding: 10px 20px;
   font-size: 16px;
   background-color: var(--base-color);
-  position: relative; // Добавьте это, чтобы lightsaber был позиционирован относительно карточки
+  position: relative;
 }
 
 .character.selected {
@@ -47,8 +47,8 @@
 
 .lightsaber {
   position: absolute;
-  bottom: 10px; // Измените это, чтобы позиционировать чекбокс внутри карточки
-  right: 10px; // Измените это, чтобы позиционировать чекбокс внутри карточки
+  bottom: 10px;
+  right: 10px;
 }
 
 .lightsaber label {

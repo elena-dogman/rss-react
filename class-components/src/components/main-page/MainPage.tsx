@@ -5,13 +5,8 @@ import Results from '../Results/Results';
 import CharacterDetails from '../CharacterDetails/CharacterDetails';
 import Pagination from '../Pagination/Pagination';
 import HomeworldFetcher from '../HomeworldFetcher/HomeworldFetcher';
-import { useFetchCharacterDetailsQuery } from '../../store/reducers/apiSlice';
-import { setPage, setSearchTerm } from '../../store/reducers/searchSlice';
-import {
-  fetchCharacters,
-  setCurrentPage,
-  setHomeworlds,
-} from '../../store/reducers/charactersSlice';
+import { useFetchCharacterDetailsQuery, useFetchCharactersQuery } from '../../store/reducers/apiSlice';
+import { setHomeworlds } from '../../store/reducers/charactersSlice';
 import { DetailProvider } from '../../contexts/DetailContext';
 import { Character } from '../../types/types';
 import Flyout from '../Flyout/Flyout';
@@ -20,7 +15,14 @@ import { RootState } from '../../store/store';
 import { useLoading } from '../../contexts/useLoading';
 import yodaImg from '../../../public/assets/yoda.png';
 
-const MainPageContent: React.FC = () => {
+interface MainPageProps {
+  initialData: {
+    characters: Character[];
+    totalPages: number;
+  };
+}
+
+const MainPageContent: React.FC<MainPageProps> = ({ initialData }) => {
   const { setLoading, isLoading } = useLoading();
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,11 +32,21 @@ const MainPageContent: React.FC = () => {
   const page = parseInt(searchParams.get('page') || '1', 10);
   const detailId = searchParams.get('details');
 
-  const { characters, homeworlds, isLoading: charactersLoading, totalPages } = useAppSelector(
+  const { homeworlds, isLoading: charactersLoading } = useAppSelector(
     (state: RootState) => state.characters,
   );
   const { data: selectedCharacter, isLoading: isDetailLoading } = useFetchCharacterDetailsQuery(detailId || '');
+  const { data, isFetching } = useFetchCharactersQuery({ term, page });
   const [homeworldsState, setHomeworldsState] = useState<{ [url: string]: string }>({});
+  const [characters, setCharacters] = useState<Character[]>(initialData.characters);
+  const [totalPages, setTotalPages] = useState<number>(initialData.totalPages);
+
+  useEffect(() => {
+    if (data) {
+      setCharacters(data.characters);
+      setTotalPages(data.totalPages);
+    }
+  }, [data]);
 
   const handleHomeworldFetch = useCallback((url: string, name: string) => {
     if (!homeworlds[url]) {
@@ -46,31 +58,24 @@ const MainPageContent: React.FC = () => {
   const handlePageChange = useCallback((newPage: number) => {
     const params = new URLSearchParams(location.search);
     params.set('page', newPage.toString());
-    navigate(`?${params.toString()}`);
-    setLoading(true);
-    dispatch(setCurrentPage(newPage));
-    dispatch(fetchCharacters({ term, page: newPage })).finally(() => setLoading(false));
-  }, [location.search, term, navigate, dispatch, setLoading]);
+    navigate(`/?${params.toString()}`);
+  }, [location.search, navigate]);
 
   const handleCharacterClick = useCallback((character: Character) => {
     const params = new URLSearchParams(location.search);
     params.set('details', character.url);
-    navigate(`?${params.toString()}`);
+    navigate(`/?${params.toString()}`);
   }, [navigate, location.search]);
 
   const handleCloseDetail = useCallback(() => {
     const params = new URLSearchParams(location.search);
     params.delete('details');
-    navigate(`?${params.toString()}`);
+    navigate(`/?${params.toString()}`);
   }, [navigate, location.search]);
 
   useEffect(() => {
-    setLoading(true);
-    dispatch(setSearchTerm(term));
-    dispatch(setPage(page));
-    dispatch(setCurrentPage(page));
-    dispatch(fetchCharacters({ term, page })).finally(() => setLoading(false));
-  }, [term, page, dispatch, setLoading]);
+    setLoading(isFetching);
+  }, [isFetching, setLoading]);
 
   return (
     <div className={styles.mainPage}>
@@ -132,9 +137,9 @@ const MainPageContent: React.FC = () => {
   );
 };
 
-const MainPage: React.FC = () => (
+const MainPage: React.FC<MainPageProps> = ({ initialData }) => (
   <DetailProvider>
-    <MainPageContent />
+    <MainPageContent initialData={initialData} />
   </DetailProvider>
 );
 
